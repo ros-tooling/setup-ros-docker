@@ -1,0 +1,64 @@
+name: "Build Docker image"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  schedule:
+    # Run the CI automatically every hour to look for flakyness.
+    - cron:  '0 * * * *'
+
+jobs:
+  build_ubuntu_docker_image:
+    strategy:
+      fail-fast: false
+      matrix:
+          base_image_name: [ubuntu]
+          base_image_tag: [bionic]
+    name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
+    # always use latest linux worker, as it should not have any impact
+    # when it comes to building docker images.
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v2
+    - name: publish image
+      uses: matootie/github-docker@v2.2.2
+      with:
+        accessToken: ${{ secrets.github_token }}
+        buildArg: |
+            BASE_IMAGE_NAME=${{ matrix.base_image_name }}
+            BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
+            VCS_REF=${{ github.sha }}
+        imageName: "setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
+
+  build_ubuntu_docker_image_ros:
+    strategy:
+      fail-fast: false
+      matrix:
+          base_image_name: [ubuntu]
+          base_image_tag: [bionic]
+          extra_apt_packages:
+              - ros-dashing-desktop
+              - ros-dashing-ros-base
+              - ros-eloquent-desktop
+              - ros-eloquent-ros-base
+              - ros-melodic-desktop
+              - ros-melodic-ros-base
+    name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}"
+    # always use latest linux worker, as it should not have any impact
+    # when it comes to building docker images.
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v2
+    - name: publish image
+      uses: matootie/github-docker@v2.2.2
+      with:
+        accessToken: ${{ secrets.github_token }}
+        buildArg: |
+            BASE_IMAGE_NAME=${{ matrix.base_image_name }}
+            BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
+            EXTRA_APT_PACKAGES=${{ matrix.extra_apt_packages }}
+            VCS_REF=${{ github.sha }}
+        imageName: "setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}"
