@@ -23,14 +23,17 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@v2
     - name: publish image
-      uses: matootie/github-docker@v2.2.2
+      uses: elgohr/Publish-Docker-Github-Action@2.14
       with:
-        accessToken: ${{ secrets.github_token }}
         buildArg: |
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
-        imageName: "setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
+        name: rostooling/setup-ros-docker
+        tags: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest"
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        registry: 'hub.docker.com'
 
   build_ubuntu_docker_image_ros:
     strategy:
@@ -53,12 +56,15 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@v2
     - name: publish image
-      uses: matootie/github-docker@v2.2.2
+      uses: elgohr/Publish-Docker-Github-Action@2.14
       with:
-        accessToken: ${{ secrets.github_token }}
         buildArg: |
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             EXTRA_APT_PACKAGES=${{ matrix.extra_apt_packages }}
             VCS_REF=${{ github.sha }}
-        imageName: "setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}"
+        name: rostooling/setup-ros-docker
+        tags: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}-latest"
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        registry: 'hub.docker.com'
