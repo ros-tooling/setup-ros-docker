@@ -4,6 +4,10 @@ set -euxo pipefail
 apt-get update
 apt-get install --no-install-recommends --quiet --yes sudo
 
+groupadd -r rosbuild
+useradd --no-log-init -r -g rosbuild rosbuild
+echo "rosbuild ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 echo 'Etc/UTC' > /etc/timezone
 
 apt-get update
