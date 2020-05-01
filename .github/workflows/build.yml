@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          base_image_tag: [bionic]
+          base_image_tag: [bionic, focal]
     name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
@@ -35,7 +35,9 @@ jobs:
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
     - run: docker images
     - run: "docker tag docker.pkg.github.com/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}:master rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest"
+      if: github.event_name != 'pull_request'
     - run: "docker push rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest"
+      if: github.event_name != 'pull_request'
 
   build_ubuntu_docker_image_ros:
     strategy:
@@ -71,7 +73,9 @@ jobs:
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
     - run: docker images
     - run: "docker tag docker.pkg.github.com/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}:master rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}-latest"
+      if: github.event_name != 'pull_request'
     - run: "docker push rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages}}-latest"
+      if: github.event_name != 'pull_request'
 
   log_workflow_status_to_cloudwatch:
     runs-on: ubuntu-latest
