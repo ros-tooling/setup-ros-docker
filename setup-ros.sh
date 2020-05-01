@@ -43,7 +43,6 @@ apt-get install --no-install-recommends --quiet --yes \
 	libasio-dev \
 	libc++-dev \
 	libc++abi-dev \
-	libopensplice69 \
 	libssl-dev \
 	libtinyxml2-dev \
 	python3-dev \
@@ -51,8 +50,13 @@ apt-get install --no-install-recommends --quiet --yes \
 	python3-pip \
 	python3-rosdep \
 	python3-vcstool \
+	python3-wheel \
 	rti-connext-dds-5.3.1 \
 	wget
+
+# libopensplice69 does not exist on Ubuntu 20.04, so we're attempting to
+# install it, but won't fail if it does not suceed.
+apt-get install --no-install-recommends --quiet --yes libopensplice69 || true
 
 pip3 install --upgrade \
 	argcomplete \
