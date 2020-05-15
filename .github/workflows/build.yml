@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          base_image_tag: [bionic, focal]
+          base_image_tag: [bionic, focal, xenial]
     name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
@@ -44,14 +44,48 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          base_image_tag: [bionic]
           extra_apt_packages:
               - ros-dashing-desktop
               - ros-dashing-ros-base
               - ros-eloquent-desktop
               - ros-eloquent-ros-base
+              - ros-foxy-desktop
+              - ros-foxy-ros-base
+              - ros-kinetic-desktop
+              - ros-kinetic-ros-base
               - ros-melodic-desktop
               - ros-melodic-ros-base
+          include:
+          # Kinetic Kame (May 2016 - May 2021)
+          - extra_apt_packages: ros-kinetic-desktop
+            base_image_tag: xenial
+          - extra_apt_packages: ros-kinetic-ros-base
+            base_image_tag: xenial
+
+          # Melodic Morenia (May 2018 - May 2023)
+          - extra_apt_packages: ros-melodic-desktop
+            base_image_tag: bionic
+          - extra_apt_packages: ros-melodic-ros-base
+            base_image_tag: bionic
+
+          # Dashing Diademata (May 2019 - May 2021)
+          - extra_apt_packages: ros-dashing-desktop
+            base_image_tag: bionic
+          - extra_apt_packages: ros-dashing-ros-base
+            base_image_tag: bionic
+
+          # Eloquent Elusor (November 2019 - November 2020)
+          - extra_apt_packages: ros-eloquent-desktop
+            base_image_tag: bionic
+          - extra_apt_packages: ros-eloquent-ros-base
+            base_image_tag: bionic
+
+          # Foxy Fitzroy (May 2020 - May 2023+)
+          - extra_apt_packages: ros-foxy-desktop
+            base_image_tag: focal
+          - extra_apt_packages: ros-foxy-ros-base
+            base_image_tag: focal
+
     name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
