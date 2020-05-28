@@ -49,8 +49,8 @@ jobs:
               - ros-dashing-ros-base
               - ros-eloquent-desktop
               - ros-eloquent-ros-base
-              - ros-foxy-desktop
-              - ros-foxy-ros-base
+              # - ros-foxy-desktop
+              # - ros-foxy-ros-base
               - ros-kinetic-desktop
               - ros-kinetic-ros-base
               - ros-melodic-desktop
@@ -81,10 +81,10 @@ jobs:
             base_image_tag: bionic
 
           # Foxy Fitzroy (May 2020 - May 2023+)
-          - extra_apt_packages: ros-foxy-desktop
-            base_image_tag: focal
-          - extra_apt_packages: ros-foxy-ros-base
-            base_image_tag: focal
+          # - extra_apt_packages: ros-foxy-desktop
+          #   base_image_tag: focal
+          # - extra_apt_packages: ros-foxy-ros-base
+          #   base_image_tag: focal
 
     name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}"
     # always use latest linux worker, as it should not have any impact
