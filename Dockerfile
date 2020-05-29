@@ -22,6 +22,9 @@ ARG VCS_REF
 # The ROS distribution being targeted by this image
 ARG ROS_DISTRO
 
+# The ROS repository that should be used (for example, release or testing)
+ARG ROS_REPO_SUFFIX
+
 # Additional APT packages to be installed
 #
 # This is used to build Docker images incorporating various ROS, or ROS 2
@@ -38,7 +41,7 @@ LABEL org.label-schema.vcs-ref="${VCS_REF}"
 LABEL org.label-schema.vendor="ROS Tooling Working Group"
 
 COPY setup-ros.sh /tmp/setup-ros.sh
-RUN /tmp/setup-ros.sh && rm -f /tmp/setup-ros.sh
+RUN /tmp/setup-ros.sh "${ROS_REPO_SUFFIX}" && rm -f /tmp/setup-ros.sh
 ENV LANG en_US.UTF-8
 RUN for i in ${EXTRA_APT_PACKAGES}; do \
         apt-get install --yes --no-install-recommends "$i"; \

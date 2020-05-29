@@ -93,11 +93,13 @@ jobs:
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: desktop
-            output_image_tag: ubuntu-focal-ros-foxy-desktop
+            ros_repo_suffix: -testing
+            output_image_tag: ubuntu-focal-ros-foxy-desktop-testing
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: ros-base
-            output_image_tag: ubuntu-focal-ros-foxy-ros-base
+            ros_repo_suffix: -testing
+            output_image_tag: ubuntu-focal-ros-foxy-ros-base-testing
 
     name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact
@@ -116,6 +118,7 @@ jobs:
             EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=${{ matrix.ros_distro }}
+            ROS_REPO_SUFFIX=${{ matrix.ros_repo_suffix }}
         imageName: "setup-ros-docker-${{ matrix.output_image_tag }}"
     # Publish the image to DockerHub too
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"

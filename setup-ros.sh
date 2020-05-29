@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 
+ROS_REPO_SUFFIX=$1
+
 apt-get update
 apt-get install --no-install-recommends --quiet --yes sudo
 
@@ -25,16 +27,9 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
     --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" \
+echo "deb http://packages.ros.org/ros${ROS_REPO_SUFFIX}/ubuntu $(lsb_release -sc) main" \
     > /etc/apt/sources.list.d/ros-latest.list
-# Add in ros2-testing to find the Foxy beta
-if [[ "$ROS_DISTRO" == "foxy" ]]; then
-	ros2_apt_source="ros2-testing"
-else
-	ros2_apt_source="ros2"
-fi
-
-echo "deb http://packages.ros.org/${ros2_apt_source}/ubuntu $(lsb_release -sc) main" \
+echo "deb http://packages.ros.org/ros2${ROS_REPO_SUFFIX}/ubuntu $(lsb_release -sc) main" \
 	> /etc/apt/sources.list.d/ros2-latest.list
 
 apt-get update
