@@ -45,6 +45,7 @@ jobs:
       matrix:
           base_image_name: [ubuntu]
           ros_distro: [kinetic, melodic, dashing, eloquent, foxy]
+          ros_variant: [desktop, ros-base]
           include:
 
           # Kinetic Kame (May 2016 - May 2021)
