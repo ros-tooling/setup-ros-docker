@@ -53,52 +53,60 @@ jobs:
           - ros_distro: kinetic
             base_image_tag: xenial
             ros_variant: desktop
+            ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-xenial-ros-kinetic-desktop
           - ros_distro: kinetic
             base_image_tag: xenial
             ros_variant: ros-base
+            ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-xenial-ros-kinetic-ros-base
 
           # Melodic Morenia (May 2018 - May 2023)
           - ros_distro: melodic
             base_image_tag: bionic
             ros_variant: desktop
+            ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-bionic-ros-melodic-desktop
           - ros_distro: melodic
             base_image_tag: bionic
             ros_variant: ros-base
+            ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-bionic-ros-melodic-ros-base
 
           # Dashing Diademata (May 2019 - May 2021)
           - ros_distro: dashing
             base_image_tag: bionic
             ros_variant: desktop
+            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-bionic-ros-dashing-desktop
           - ros_distro: dashing
             base_image_tag: bionic
             ros_variant: ros-base
+            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-bionic-ros-dashing-ros-base
 
           # Eloquent Elusor (November 2019 - November 2020)
           - ros_distro: eloquent
             base_image_tag: bionic
             ros_variant: desktop
+            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-bionic-ros-eloquent-desktop
           - ros_distro: eloquent
             base_image_tag: bionic
             ros_variant: ros-base
+            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-bionic-ros-eloquent-ros-base
 
           # Foxy Fitzroy (May 2020 - May 2023+)
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: desktop
-            ros_repo_suffix: -testing
+            ros_repo_url: http://packages.ros.org/ros2-testing
             output_image_tag: ubuntu-focal-ros-foxy-desktop-testing
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: ros-base
-            ros_repo_suffix: -testing
+            ros_repo_url: http://packages.ros.org/ros2-testing
             output_image_tag: ubuntu-focal-ros-foxy-ros-base-testing
 
     name: "${{ matrix.output_image_tag }}"
@@ -118,7 +126,7 @@ jobs:
             EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=${{ matrix.ros_distro }}
-            ROS_REPO_SUFFIX=${{ matrix.ros_repo_suffix }}
+            ROS_APT_REPO_URL=${{ matrix.ros_repo_url }}
         imageName: "setup-ros-docker-${{ matrix.output_image_tag }}"
     # Publish the image to DockerHub too
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"

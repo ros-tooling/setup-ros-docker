@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-ROS_REPO_SUFFIX=$1
+readonly ROS_APT_HTTP_REPO_URL=$1
 
 apt-get update
 apt-get install --no-install-recommends --quiet --yes sudo
@@ -27,17 +27,15 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
     --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-echo "deb http://packages.ros.org/ros${ROS_REPO_SUFFIX}/ubuntu $(lsb_release -sc) main" \
+echo "deb ${ROS_APT_HTTP_REPO_URL}/ubuntu $(lsb_release -sc) main" \
     > /etc/apt/sources.list.d/ros-latest.list
-echo "deb http://packages.ros.org/ros2${ROS_REPO_SUFFIX}/ubuntu $(lsb_release -sc) main" \
-	> /etc/apt/sources.list.d/ros2-latest.list
 
 apt-get update
 
 DEBIAN_FRONTEND=noninteractive \
 RTI_NC_LICENSE_ACCEPTED=yes \
 apt-get install --no-install-recommends --quiet --yes \
-  build-essential \
+	build-essential \
 	clang \
 	cmake \
 	git \
