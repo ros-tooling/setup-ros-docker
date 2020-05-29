@@ -40,4 +40,6 @@ ENV LANG en_US.UTF-8
 RUN for i in ${EXTRA_APT_PACKAGES}; do \
         apt-get install --yes --no-install-recommends "$i"; \
     done
+# ROS 1 installations clobber this - it doesn't affect ROS 2
+RUN pip3 install -U catkin_pkg
 USER rosbuild
