@@ -44,49 +44,60 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          extra_apt_packages:
-              - ros-dashing-desktop
-              - ros-dashing-ros-base
-              - ros-eloquent-desktop
-              - ros-eloquent-ros-base
-              # - ros-foxy-desktop
-              # - ros-foxy-ros-base
-              - ros-kinetic-desktop
-              - ros-kinetic-ros-base
-              - ros-melodic-desktop
-              - ros-melodic-ros-base
+          ros_distro: [kinetic, melodic, dashing, eloquent, foxy]
           include:
+
           # Kinetic Kame (May 2016 - May 2021)
-          - extra_apt_packages: ros-kinetic-desktop
+          - ros_distro: kinetic
             base_image_tag: xenial
-          - extra_apt_packages: ros-kinetic-ros-base
+            ros_variant: desktop
+            output_image_tag: ubuntu-xenial-ros-kinetic-desktop
+          - ros_distro: kinetic
             base_image_tag: xenial
+            ros_variant: ros-base
+            output_image_tag: ubuntu-xenial-ros-kinetic-ros-base
 
           # Melodic Morenia (May 2018 - May 2023)
-          - extra_apt_packages: ros-melodic-desktop
+          - ros_distro: melodic
             base_image_tag: bionic
-          - extra_apt_packages: ros-melodic-ros-base
+            ros_variant: desktop
+            output_image_tag: ubuntu-bionic-ros-melodic-desktop
+          - ros_distro: melodic
             base_image_tag: bionic
+            ros_variant: ros-base
+            output_image_tag: ubuntu-bionic-ros-melodic-ros-base
 
           # Dashing Diademata (May 2019 - May 2021)
-          - extra_apt_packages: ros-dashing-desktop
+          - ros_distro: dashing
             base_image_tag: bionic
-          - extra_apt_packages: ros-dashing-ros-base
+            ros_variant: desktop
+            output_image_tag: ubuntu-bionic-ros-dashing-desktop
+          - ros_distro: dashing
             base_image_tag: bionic
+            ros_variant: ros-base
+            output_image_tag: ubuntu-bionic-ros-dashing-ros-base
 
           # Eloquent Elusor (November 2019 - November 2020)
-          - extra_apt_packages: ros-eloquent-desktop
+          - ros_distro: eloquent
             base_image_tag: bionic
-          - extra_apt_packages: ros-eloquent-ros-base
+            ros_variant: desktop
+            output_image_tag: ubuntu-bionic-ros-eloquent-desktop
+          - ros_distro: eloquent
             base_image_tag: bionic
+            ros_variant: ros-base
+            output_image_tag: ubuntu-bionic-ros-eloquent-ros-base
 
           # Foxy Fitzroy (May 2020 - May 2023+)
-          # - extra_apt_packages: ros-foxy-desktop
-          #   base_image_tag: focal
-          # - extra_apt_packages: ros-foxy-ros-base
-          #   base_image_tag: focal
+          - ros_distro: foxy
+            base_image_tag: focal
+            ros_variant: desktop
+            output_image_tag: ubuntu-focal-ros-foxy-desktop
+          - ros_distro: foxy
+            base_image_tag: focal
+            ros_variant: ros-base
+            output_image_tag: ubuntu-focal-ros-foxy-ros-base
 
-    name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}"
+    name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
     runs-on: ubuntu-latest
@@ -100,15 +111,16 @@ jobs:
         buildArg: |
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
-            EXTRA_APT_PACKAGES=${{ matrix.extra_apt_packages }}
+            EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }}
             VCS_REF=${{ github.sha }}
-        imageName: "setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}"
+            ROS_DISTRO=${{ matrix.ros_distro }}
+        imageName: "setup-ros-docker-${{ matrix.output_image_tag }}"
     # Publish the image to DockerHub too
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
     - run: docker images
-    - run: "docker tag docker.pkg.github.com/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}:master rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages }}-latest"
+    - run: "docker tag docker.pkg.github.com/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.output_image_tag }}:master rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest"
       if: github.event_name != 'pull_request'
-    - run: "docker push rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-${{ matrix.extra_apt_packages}}-latest"
+    - run: "docker push rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest"
       if: github.event_name != 'pull_request'
 
   log_workflow_status_to_cloudwatch:

@@ -27,15 +27,22 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
 
 echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" \
     > /etc/apt/sources.list.d/ros-latest.list
-echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -sc) main" \
-    > /etc/apt/sources.list.d/ros2-latest.list
+# Add in ros2-testing to find the Foxy beta
+if [[ "$ROS_DISTRO" == "foxy" ]]; then
+	ros2_apt_source="ros2-testing"
+else
+	ros2_apt_source="ros2"
+fi
+
+echo "deb http://packages.ros.org/${ros2_apt_source}/ubuntu $(lsb_release -sc) main" \
+	> /etc/apt/sources.list.d/ros2-latest.list
 
 apt-get update
 
 DEBIAN_FRONTEND=noninteractive \
 RTI_NC_LICENSE_ACCEPTED=yes \
 apt-get install --no-install-recommends --quiet --yes \
-    build-essential \
+  build-essential \
 	clang \
 	cmake \
 	git \
@@ -46,7 +53,6 @@ apt-get install --no-install-recommends --quiet --yes \
 	libssl-dev \
 	libtinyxml2-dev \
 	python3-dev \
-	python3-lark-parser \
 	python3-pip \
 	python3-rosdep \
 	python3-vcstool \

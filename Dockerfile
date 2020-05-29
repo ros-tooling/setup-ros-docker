@@ -19,6 +19,9 @@ FROM "${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}"
 # Commit ID this image is based upon
 ARG VCS_REF
 
+# The ROS distribution being targeted by this image
+ARG ROS_DISTRO
+
 # Additional APT packages to be installed
 #
 # This is used to build Docker images incorporating various ROS, or ROS 2
