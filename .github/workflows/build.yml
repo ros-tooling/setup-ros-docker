@@ -127,7 +127,7 @@ jobs:
         buildArg: |
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
-            EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }},${{ matrx.extra_apt_packages }}
+            EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }},${{ matrix.extra_apt_packages }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=${{ matrix.ros_distro }}
             ROS_APT_REPO_URLS=${{ matrix.ros_repo_url }}
