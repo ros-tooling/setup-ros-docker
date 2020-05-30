@@ -43,7 +43,7 @@ LABEL org.label-schema.vendor="ROS Tooling Working Group"
 COPY setup-ros.sh /tmp/setup-ros.sh
 RUN /tmp/setup-ros.sh "${ROS_APT_REPO_URLS}" && rm -f /tmp/setup-ros.sh
 ENV LANG en_US.UTF-8
-RUN for i in ${EXTRA_APT_PACKAGES}; do \
+RUN for i in ${EXTRA_APT_PACKAGES//,/ }; do \
         apt-get install --yes --no-install-recommends "$i"; \
     done
 # ROS 1 installations clobber this - it doesn't affect ROS 2

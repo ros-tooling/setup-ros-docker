@@ -54,11 +54,13 @@ jobs:
             base_image_tag: xenial
             ros_variant: desktop
             ros_repo_url: http://packages.ros.org/ros
+            extra_apt_packages: python-rosdep
             output_image_tag: ubuntu-xenial-ros-kinetic-desktop
           - ros_distro: kinetic
             base_image_tag: xenial
             ros_variant: ros-base
             ros_repo_url: http://packages.ros.org/ros
+            extra_apt_packages: python-rosdep
             output_image_tag: ubuntu-xenial-ros-kinetic-ros-base
 
           # Melodic Morenia (May 2018 - May 2023)
@@ -66,11 +68,13 @@ jobs:
             base_image_tag: bionic
             ros_variant: desktop
             ros_repo_url: http://packages.ros.org/ros
+            extra_apt_packages: python-rosdep
             output_image_tag: ubuntu-bionic-ros-melodic-desktop
           - ros_distro: melodic
             base_image_tag: bionic
             ros_variant: ros-base
             ros_repo_url: http://packages.ros.org/ros
+            extra_apt_packages: python-rosdep
             output_image_tag: ubuntu-bionic-ros-melodic-ros-base
 
           # Dashing Diademata (May 2019 - May 2021)
@@ -123,7 +127,7 @@ jobs:
         buildArg: |
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
-            EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }}
+            EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }},${{ matrx.extra_apt_packages }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=${{ matrix.ros_distro }}
             ROS_APT_REPO_URLS=${{ matrix.ros_repo_url }}
