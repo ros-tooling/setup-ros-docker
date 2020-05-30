@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-readonly ROS_APT_HTTP_REPO_URL=$1
+readonly ROS_APT_HTTP_REPO_URLS=$1
 
 apt-get update
 apt-get install --no-install-recommends --quiet --yes sudo
@@ -27,8 +27,9 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
     --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-echo "deb ${ROS_APT_HTTP_REPO_URL}/ubuntu $(lsb_release -sc) main" \
-    > /etc/apt/sources.list.d/ros-latest.list
+for URL in ${ROS_APT_HTTP_REPO_URLS}; do
+    echo "deb ${URL}/ubuntu $(lsb_release -sc) main" >> /etc/apt/sources.list.d/ros-latest.list
+done
 
 apt-get update
 
