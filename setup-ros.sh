@@ -27,7 +27,7 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
     --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-for URL in ${ROS_APT_HTTP_REPO_URLS}; do
+for URL in ${ROS_APT_HTTP_REPO_URLS//,/ }; do
     echo "deb ${URL}/ubuntu $(lsb_release -sc) main" >> /etc/apt/sources.list.d/ros-latest.list
 done
 

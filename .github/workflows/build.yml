@@ -30,8 +30,7 @@ jobs:
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
-            ROS_DISTRO=
-            "ROS_APT_REPO_URL=http://packages.ros.org/ros&#x20;http://packages.ros.org/ros2"
+            ROS_APT_REPO_URLS=http://packages.ros.org/ros,http://packages.ros.org/ros2
         imageName: "setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # Publish the image to DockerHub too
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
@@ -127,7 +126,7 @@ jobs:
             EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=${{ matrix.ros_distro }}
-            ROS_APT_REPO_URL=${{ matrix.ros_repo_url }}
+            ROS_APT_REPO_URLS=${{ matrix.ros_repo_url }}
         imageName: "setup-ros-docker-${{ matrix.output_image_tag }}"
     # Publish the image to DockerHub too
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
