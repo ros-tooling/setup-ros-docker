@@ -1,7 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 
-readonly ROS_APT_HTTP_REPO_URLS=$1
+readonly ROS_DISTRO=$1
+readonly ROS_APT_HTTP_REPO_URLS=$2
 
 apt-get update
 apt-get install --no-install-recommends --quiet --yes sudo
@@ -31,6 +32,15 @@ for URL in ${ROS_APT_HTTP_REPO_URLS//,/ }; do
     echo "deb ${URL}/ubuntu $(lsb_release -sc) main" >> /etc/apt/sources.list.d/ros-latest.list
 done
 
+case ${ROS_DISTRO} in
+    "kinetic" | "melodic")
+        ROSDEP_APT_PACKAGE="python-rosdep"
+        ;;
+    *)
+        ROSDEP_APT_PACKAGE="python3-rosdep"
+        ;;
+esac
+
 apt-get update
 
 DEBIAN_FRONTEND=noninteractive \
@@ -48,9 +58,9 @@ apt-get install --no-install-recommends --quiet --yes \
 	libtinyxml2-dev \
 	python3-dev \
 	python3-pip \
-	python3-rosdep \
 	python3-vcstool \
 	python3-wheel \
+	${ROSDEP_APT_PACKAGE} \
 	rti-connext-dds-5.3.1 \
 	wget
 
