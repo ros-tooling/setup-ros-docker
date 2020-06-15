@@ -95,7 +95,7 @@ pip3 install --upgrade \
 	coverage \
 	cryptography \
 	empy \
-	flake8 \
+	"flake8<3.8" \
 	flake8-blind-except \
 	flake8-builtins \
 	flake8-class-newline \
