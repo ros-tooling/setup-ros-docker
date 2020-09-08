@@ -38,7 +38,12 @@ jobs:
     - run: docker images
     - run: "docker tag docker.pkg.github.com/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}:master rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest"
       if: github.event_name != 'pull_request'
-    - run: "docker push rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest"
+    - name: docker push
+      uses: nick-invision/retry@v1
+      with:
+        retry_wait_seconds: 60
+        max_attempts: 5
+        run: "docker push rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest"
       if: github.event_name != 'pull_request'
 
   build_ubuntu_docker_image_ros:
@@ -137,7 +142,7 @@ jobs:
     - name: docker push
       uses: nick-invision/retry@v1
       with:
-        timeout_minutes: 1
+        retry_wait_seconds: 60
         max_attempts: 5
         command: "docker push rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest"
       if: github.event_name != 'pull_request'
