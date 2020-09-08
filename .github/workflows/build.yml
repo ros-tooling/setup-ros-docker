@@ -134,7 +134,12 @@ jobs:
     - run: docker images
     - run: "docker tag docker.pkg.github.com/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.output_image_tag }}:master rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest"
       if: github.event_name != 'pull_request'
-    - run: "docker push rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest"
+    - name: docker push
+      uses: nick-invision/retry@v1
+      with:
+        timeout_minutes: 1
+        max_attempts: 5
+        command: "docker push rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest"
       if: github.event_name != 'pull_request'
 
   log_workflow_status_to_cloudwatch:
