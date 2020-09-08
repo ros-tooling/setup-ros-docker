@@ -23,7 +23,7 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@v2
     - name: publish image
-      uses: matootie/github-docker@v2.2.2
+      uses: matootie/github-docker@v3.0.0
       with:
         accessToken: ${{ secrets.github_token }}
         buildArgs: |
@@ -118,7 +118,7 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@v2
     - name: publish image
-      uses: matootie/github-docker@v2.2.2
+      uses: matootie/github-docker@v3.0.0
       with:
         accessToken: ${{ secrets.github_token }}
         buildArgs: |
