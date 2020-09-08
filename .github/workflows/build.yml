@@ -23,10 +23,10 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@v2
     - name: publish image
-      uses: matootie/github-docker@v2.2.2
+      uses: matootie/github-docker@v3.0.0
       with:
         accessToken: ${{ secrets.github_token }}
-        buildArg: |
+        buildArgs: |
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
@@ -118,10 +118,10 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@v2
     - name: publish image
-      uses: matootie/github-docker@v2.2.2
+      uses: matootie/github-docker@v3.0.0
       with:
         accessToken: ${{ secrets.github_token }}
-        buildArg: |
+        buildArgs: |
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }}
