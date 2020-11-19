@@ -7,6 +7,15 @@ readonly ROS_APT_HTTP_REPO_URLS=$2
 apt-get update
 apt-get install --no-install-recommends --quiet --yes sudo
 
+# NOTE: this user is added for backward compatibility.
+# Before the resolution of ros-tooling/setup-ros-docker#7 we used `USER rosbuild:rosbuild`
+# and recommended that users of these containers run the following step in their workflow
+# - run: sudo chown -R rosbuild:rosbuild "$HOME" .
+# For repositories that still have this command in their workflow, they would fail if the user
+# did not still exist. This user is no longer used but is just present so that command succeeds.
+groupadd -r rosbuild
+useradd --no-log-init -r -g rosbuild rosbuild
+
 echo 'Etc/UTC' > /etc/timezone
 
 apt-get update
