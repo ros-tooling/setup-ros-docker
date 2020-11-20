@@ -81,6 +81,7 @@ pip3 install --upgrade \
 	colcon-cmake==0.2.22 \
 	colcon-common-extensions==0.2.1 \
 	colcon-core==0.5.9 \
+	colcon-coveragepy-result==0.0.8 \
 	colcon-defaults==0.2.5 \
 	colcon-lcov-result==0.4.0 \
 	colcon-library-path==0.2.1 \
