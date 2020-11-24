@@ -111,6 +111,7 @@ pip3 install --upgrade \
 	flake8-import-order \
 	flake8-quotes \
 	ifcfg \
+	importlib-metadata==2.* \
 	lark-parser \
 	mock \
 	mypy \
