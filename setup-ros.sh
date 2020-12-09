@@ -73,6 +73,10 @@ apt-get install --no-install-recommends --quiet --yes \
 # install it, but won't fail if it does not suceed.
 apt-get install --no-install-recommends --quiet --yes libopensplice69 || true
 
+# Get the latest version of pip before installing dependencies,
+# the version from apt can be very out of date (v8.0 on xenial vs v20 as of this writing)
+pip3 install --upgrade pip
+
 pip3 install --upgrade \
 	argcomplete \
 	catkin_pkg \
