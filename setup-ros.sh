@@ -14,7 +14,8 @@ apt-get install --no-install-recommends --quiet --yes sudo
 # For repositories that still have this command in their workflow, they would fail if the user
 # did not still exist. This user is no longer used but is just present so that command succeeds.
 groupadd -r rosbuild
-useradd --no-log-init -r -g rosbuild rosbuild
+useradd --no-log-init --create-home -r -g rosbuild rosbuild
+echo "rosbuild ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 echo 'Etc/UTC' > /etc/timezone
 
