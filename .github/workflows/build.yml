@@ -102,13 +102,13 @@ jobs:
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: desktop
-            ros_repo_url: http://packages.ros.org/ros2-testing
-            output_image_tag: ubuntu-focal-ros-foxy-desktop-testing
+            ros_repo_url: http://packages.ros.org/ros2
+            output_image_tag: ubuntu-focal-ros-foxy-desktop
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: ros-base
-            ros_repo_url: http://packages.ros.org/ros2-testing
-            output_image_tag: ubuntu-focal-ros-foxy-ros-base-testing
+            ros_repo_url: http://packages.ros.org/ros2
+            output_image_tag: ubuntu-focal-ros-foxy-ros-base
 
     name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact
