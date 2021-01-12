@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [kinetic, melodic, noetic, dashing, foxy]
+          ros_distro: [kinetic, melodic, noetic, dashing, foxy, rolling]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -109,6 +109,18 @@ jobs:
             ros_variant: ros-base
             ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-foxy-ros-base
+
+          # Rolling Ridley (June 2020 - Ongoing)
+          - ros_distro: rolling
+            base_image_tag: focal
+            ros_variant: desktop
+            ros_repo_url: http://packages.ros.org/ros2
+            output_image_tag: ubuntu-focal-ros-rolling-desktop
+          - ros_distro: rolling
+            base_image_tag: focal
+            ros_variant: ros-base
+            ros_repo_url: http://packages.ros.org/ros2
+            output_image_tag: ubuntu-focal-ros-rolling-ros-base
 
     name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact
