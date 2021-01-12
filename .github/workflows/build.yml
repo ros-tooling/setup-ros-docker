@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [kinetic, melodic, dashing, eloquent, foxy]
+          ros_distro: [kinetic, melodic, dashing, foxy]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -85,18 +85,6 @@ jobs:
             ros_variant: ros-base
             ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-bionic-ros-dashing-ros-base
-
-          # Eloquent Elusor (November 2019 - November 2020)
-          - ros_distro: eloquent
-            base_image_tag: bionic
-            ros_variant: desktop
-            ros_repo_url: http://packages.ros.org/ros2
-            output_image_tag: ubuntu-bionic-ros-eloquent-desktop
-          - ros_distro: eloquent
-            base_image_tag: bionic
-            ros_variant: ros-base
-            ros_repo_url: http://packages.ros.org/ros2
-            output_image_tag: ubuntu-bionic-ros-eloquent-ros-base
 
           # Foxy Fitzroy (May 2020 - May 2023+)
           - ros_distro: foxy
