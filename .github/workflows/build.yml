@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [kinetic, melodic, dashing, foxy]
+          ros_distro: [kinetic, melodic, noetic, dashing, foxy]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -73,6 +73,18 @@ jobs:
             ros_variant: ros-base
             ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-bionic-ros-melodic-ros-base
+
+          # Noetic Ninjemys (May 2020 - May 2025)
+          - ros_distro: noetic
+            base_image_tag: focal
+            ros_variant: desktop
+            ros_repo_url: http://packages.ros.org/ros
+            output_image_tag: ubuntu-focal-ros-noetic-desktop
+          - ros_distro: noetic
+            base_image_tag: focal
+            ros_variant: ros-base
+            ros_repo_url: http://packages.ros.org/ros
+            output_image_tag: ubuntu-focal-ros-noetic-ros-base
 
           # Dashing Diademata (May 2019 - May 2021)
           - ros_distro: dashing
