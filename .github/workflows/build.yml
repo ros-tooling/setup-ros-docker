@@ -79,12 +79,12 @@ jobs:
             base_image_tag: focal
             ros_variant: desktop
             ros_repo_url: http://packages.ros.org/ros
-            output_image_tag: ubuntu-bionic-ros-noetic-desktop
+            output_image_tag: ubuntu-focal-ros-noetic-desktop
           - ros_distro: noetic
             base_image_tag: focal
             ros_variant: ros-base
             ros_repo_url: http://packages.ros.org/ros
-            output_image_tag: ubuntu-bionic-ros-noetic-ros-base
+            output_image_tag: ubuntu-focal-ros-noetic-ros-base
 
           # Dashing Diademata (May 2019 - May 2021)
           - ros_distro: dashing
