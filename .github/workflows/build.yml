@@ -6,7 +6,7 @@ on:
       - master
   schedule:
     # Run the CI automatically every hour to look for flakyness.
-    - cron:  '0 * * * *'
+    - cron:  '0 */6 * * *'
 
 jobs:
   build_ubuntu_docker_image:
