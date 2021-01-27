@@ -79,8 +79,8 @@ apt-get install --no-install-recommends --quiet --yes libopensplice69 || true
 # The latest version of pip doesn't support Python3.5 as of v21,
 # but pip 8 doesn't understand the metadata that states this, so we must first
 # make an intermediate upgrade to pip 20, which does understand that information
-pip3 install --upgrade pip==20.*
-pip3 install --upgrade pip
+python3 -m pip install --upgrade pip==20.*
+python3 -m pip install --upgrade pip
 
 pip3 install --upgrade \
 	argcomplete \
