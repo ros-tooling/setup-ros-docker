@@ -75,7 +75,11 @@ apt-get install --no-install-recommends --quiet --yes \
 apt-get install --no-install-recommends --quiet --yes libopensplice69 || true
 
 # Get the latest version of pip before installing dependencies,
-# the version from apt can be very out of date (v8.0 on xenial vs v20 as of this writing)
+# the version from apt can be very out of date (v8.0 on xenial)
+# The latest version of pip doesn't support Python3.5 as of v21,
+# but pip 8 doesn't understand the metadata that states this, so we must first
+# make an intermediate upgrade to pip 20, which does understand that information
+pip3 install --upgrade pip==20.*
 pip3 install --upgrade pip
 
 pip3 install --upgrade \
