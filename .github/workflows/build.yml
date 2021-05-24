@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [kinetic, melodic, noetic, dashing, foxy, rolling]
+          ros_distro: [kinetic, melodic, noetic, dashing, foxy, galactic, rolling]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -98,7 +98,7 @@ jobs:
             ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-bionic-ros-dashing-ros-base
 
-          # Foxy Fitzroy (May 2020 - May 2023+)
+          # Foxy Fitzroy (May 2020 - May 2023)
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: desktop
@@ -109,6 +109,18 @@ jobs:
             ros_variant: ros-base
             ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-foxy-ros-base
+
+          # Galactic Geochelone (May 2021 - November 2022)
+          - ros_distro: galactic
+            base_image_tag: focal
+            ros_variant: desktop
+            ros_repo_url: http://packages.ros.org/ros2
+            output_image_tag: ubuntu-focal-ros-galactic-desktop
+          - ros_distro: galactic
+            base_image_tag: focal
+            ros_variant: ros-base
+            ros_repo_url: http://packages.ros.org/ros2
+            output_image_tag: ubuntu-focal-ros-galactic-ros-base
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
