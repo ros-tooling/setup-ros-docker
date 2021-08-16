@@ -87,25 +87,25 @@ pip3 install --upgrade \
 	catkin_pkg \
 	colcon-bash==0.4.2 \
 	colcon-cd==0.1.1 \
-	colcon-cmake==0.2.22 \
+	colcon-cmake==0.2.26 \
 	colcon-common-extensions==0.2.1 \
-	colcon-core==0.5.9 \
+	colcon-core==0.6.1 \
 	colcon-coveragepy-result==0.0.8 \
 	colcon-defaults==0.2.5 \
-	colcon-lcov-result==0.4.0 \
+	colcon-lcov-result==0.5.0 \
 	colcon-library-path==0.2.1 \
-	colcon-metadata==0.2.4 \
-	colcon-mixin==0.1.8 \
+	colcon-metadata==0.2.5 \
+	colcon-mixin==0.2.0 \
 	colcon-notification==0.2.13 \
-	colcon-output==0.2.9 \
+	colcon-output==0.2.12 \
 	colcon-package-information==0.3.3 \
-	colcon-package-selection==0.2.6 \
+	colcon-package-selection==0.2.10 \
 	colcon-parallel-executor==0.2.4 \
 	colcon-pkg-config==0.1.0 \
 	colcon-powershell==0.3.6 \
-	colcon-python-setup-py==0.2.5 \
+	colcon-python-setup-py==0.2.7 \
 	colcon-recursive-crawl==0.2.1 \
-	colcon-ros==0.3.17 \
+	colcon-ros==0.3.21 \
 	colcon-test-result==0.3.8 \
 	coverage \
 	cryptography \
