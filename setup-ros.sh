@@ -95,7 +95,7 @@ pip3 install --upgrade \
 	colcon-lcov-result==0.5.0 \
 	colcon-library-path==0.2.1 \
 	colcon-metadata==0.2.5 \
-	colcon-mixin==0.2.0 \
+	"colcon-mixin<0.1.10" \
 	colcon-notification==0.2.13 \
 	colcon-output==0.2.12 \
 	colcon-package-information==0.3.3 \
