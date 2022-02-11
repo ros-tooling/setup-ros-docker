@@ -3,7 +3,6 @@
 # The script has been tested against:
 # - ubuntu:bionic
 # - ubuntu:focal
-# - ubuntu:xenial
 #
 # Do not pass directly "X:Y" to BASE_IMAGE_NAME, only pass the image name.
 # The version must be specified separately in BASE_IMAGE_TAG.
@@ -11,7 +10,7 @@
 # This script will not work with non-APT based Linux distributions.
 ARG BASE_IMAGE_NAME
 
-# Base Linux distribution version (one of "bionic", "focal", "xenial")
+# Base Linux distribution version (one of "bionic", "focal")
 ARG BASE_IMAGE_TAG
 
 FROM "${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}"
