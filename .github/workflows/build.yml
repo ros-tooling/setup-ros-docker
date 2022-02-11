@@ -133,6 +133,16 @@ jobs:
             ros_variant: ros-base
             ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-rolling-ros-base
+          - ros_distro: rolling
+            base_image_tag: jammy
+            ros_variant: desktop
+            ros_repo_url: http://packages.ros.org/ros2
+            output_image_tag: ubuntu-jammy-ros-rolling-desktop
+          - ros_distro: rolling
+            base_image_tag: jammy
+            ros_variant: ros-base
+            ros_repo_url: http://packages.ros.org/ros2
+            output_image_tag: ubuntu-jammy-ros-rolling-ros-base
 
     name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact

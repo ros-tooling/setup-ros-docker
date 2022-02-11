@@ -67,7 +67,7 @@ apt-get install --no-install-recommends --quiet --yes \
 	python3-vcstool \
 	python3-wheel \
 	${ROSDEP_APT_PACKAGE} \
-	rti-connext-dds-5.3.1 \
+	rti-connext-dds-6.0.1 \
 	wget
 
 # libopensplice69 does not exist on Ubuntu 20.04, so we're attempting to
