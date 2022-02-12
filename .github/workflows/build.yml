@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-    # Run the CI automatically every hour to look for flakyness.
+    # Run the CI automatically every day to look for flakyness.
     - cron:  '0 0 * * *'
 
 jobs:
