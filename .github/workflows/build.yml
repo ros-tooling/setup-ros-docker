@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          base_image_tag: [bionic, focal]
+          base_image_tag: [bionic, focal, jammy]
     name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
