@@ -39,11 +39,20 @@ for URL in ${ROS_APT_HTTP_REPO_URLS//,/ }; do
 done
 
 case ${ROS_DISTRO} in
-    "kinetic" | "melodic")
+    "melodic")
         ROSDEP_APT_PACKAGE="python-rosdep"
         ;;
     *)
         ROSDEP_APT_PACKAGE="python3-rosdep"
+        ;;
+esac
+
+case ${ROS_DISTRO} in
+    "melodic" | "noetic")
+        RTI_CONNEXT_DDS=""
+        ;;
+    *)
+        RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
         ;;
 esac
 
@@ -67,7 +76,7 @@ apt-get install --no-install-recommends --quiet --yes \
 	python3-vcstool \
 	python3-wheel \
 	${ROSDEP_APT_PACKAGE} \
-	rti-connext-dds-6.0.1 \
+	${RTI_CONNEXT_DDS} \
 	wget
 
 # libopensplice69 does not exist on Ubuntu 20.04, so we're attempting to
