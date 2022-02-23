@@ -31,7 +31,6 @@ jobs:
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=none
-            ROS_APT_REPO_URLS=http://packages.ros.org/ros,http://packages.ros.org/ros2
         imageName: "setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # Publish the image to DockerHub too
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
@@ -54,70 +53,58 @@ jobs:
           - ros_distro: melodic
             base_image_tag: bionic
             ros_variant: desktop
-            ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-bionic-ros-melodic-desktop
           - ros_distro: melodic
             base_image_tag: bionic
             ros_variant: ros-base
-            ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-bionic-ros-melodic-ros-base
 
           # Noetic Ninjemys (May 2020 - May 2025)
           - ros_distro: noetic
             base_image_tag: focal
             ros_variant: desktop
-            ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-focal-ros-noetic-desktop
           - ros_distro: noetic
             base_image_tag: focal
             ros_variant: ros-base
-            ros_repo_url: http://packages.ros.org/ros
             output_image_tag: ubuntu-focal-ros-noetic-ros-base
 
           # Foxy Fitzroy (May 2020 - May 2023)
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: desktop
-            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-foxy-desktop
           - ros_distro: foxy
             base_image_tag: focal
             ros_variant: ros-base
-            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-foxy-ros-base
 
           # Galactic Geochelone (May 2021 - November 2022)
           - ros_distro: galactic
             base_image_tag: focal
             ros_variant: desktop
-            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-galactic-desktop
           - ros_distro: galactic
             base_image_tag: focal
             ros_variant: ros-base
-            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-galactic-ros-base
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
             base_image_tag: focal
             ros_variant: desktop
-            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-rolling-desktop
           - ros_distro: rolling
             base_image_tag: focal
             ros_variant: ros-base
-            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-focal-ros-rolling-ros-base
           - ros_distro: rolling
             base_image_tag: jammy
             ros_variant: desktop
-            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-jammy-ros-rolling-desktop
           - ros_distro: rolling
             base_image_tag: jammy
             ros_variant: ros-base
-            ros_repo_url: http://packages.ros.org/ros2
             output_image_tag: ubuntu-jammy-ros-rolling-ros-base
 
     name: "${{ matrix.output_image_tag }}"
@@ -137,7 +124,6 @@ jobs:
             EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=${{ matrix.ros_distro }}
-            ROS_APT_REPO_URLS=${{ matrix.ros_repo_url }}
         imageName: "setup-ros-docker-${{ matrix.output_image_tag }}"
     # Publish the image to DockerHub too
     - run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
