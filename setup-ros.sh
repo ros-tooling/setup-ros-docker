@@ -2,7 +2,6 @@
 set -euxo pipefail
 
 readonly ROS_DISTRO=$1
-readonly ROS_APT_HTTP_REPO_URLS=$2
 
 apt-get update
 apt-get install --no-install-recommends --quiet --yes sudo
@@ -34,16 +33,23 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
     --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-for URL in ${ROS_APT_HTTP_REPO_URLS//,/ }; do
-    echo "deb ${URL}/ubuntu $(lsb_release -sc) main" >> /etc/apt/sources.list.d/ros-latest.list
-done
-
 case ${ROS_DISTRO} in
-    "kinetic" | "melodic")
+    "melodic")
         ROSDEP_APT_PACKAGE="python-rosdep"
         ;;
     *)
         ROSDEP_APT_PACKAGE="python3-rosdep"
+        ;;
+esac
+
+case ${ROS_DISTRO} in
+    "melodic" | "noetic")
+        RTI_CONNEXT_DDS=""
+        echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" >> /etc/apt/sources.list.d/ros-latest.list
+        ;;
+    *)
+        RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
+        echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -sc) main" >> /etc/apt/sources.list.d/ros-latest.list
         ;;
 esac
 
@@ -67,7 +73,7 @@ apt-get install --no-install-recommends --quiet --yes \
 	python3-vcstool \
 	python3-wheel \
 	${ROSDEP_APT_PACKAGE} \
-	rti-connext-dds-5.3.1 \
+	${RTI_CONNEXT_DDS} \
 	wget
 
 # libopensplice69 does not exist on Ubuntu 20.04, so we're attempting to

@@ -3,6 +3,7 @@
 # The script has been tested against:
 # - ubuntu:bionic
 # - ubuntu:focal
+# - ubuntu:jammy
 #
 # Do not pass directly "X:Y" to BASE_IMAGE_NAME, only pass the image name.
 # The version must be specified separately in BASE_IMAGE_TAG.
@@ -10,7 +11,8 @@
 # This script will not work with non-APT based Linux distributions.
 ARG BASE_IMAGE_NAME
 
-# Base Linux distribution version (one of "bionic", "focal")
+# Base Linux distribution version (one of "bionic", "focal", "jammy")
+
 ARG BASE_IMAGE_TAG
 
 FROM "${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}"
@@ -20,9 +22,6 @@ ARG VCS_REF
 
 # The ROS distribution being targeted by this image
 ARG ROS_DISTRO
-
-# The ROS repository that should be used (for example, release or testing)
-ARG ROS_APT_REPO_URLS
 
 # Additional APT packages to be installed
 #
@@ -40,7 +39,7 @@ LABEL org.label-schema.vcs-ref="${VCS_REF}"
 LABEL org.label-schema.vendor="ROS Tooling Working Group"
 
 COPY setup-ros.sh /tmp/setup-ros.sh
-RUN /tmp/setup-ros.sh "${ROS_DISTRO}" "${ROS_APT_REPO_URLS}" && rm -f /tmp/setup-ros.sh
+RUN /tmp/setup-ros.sh "${ROS_DISTRO}" && rm -f /tmp/setup-ros.sh
 ENV LANG en_US.UTF-8
 RUN for i in $(echo ${EXTRA_APT_PACKAGES} | tr ',' ' '); do \
         apt-get install --yes --no-install-recommends "$i"; \
