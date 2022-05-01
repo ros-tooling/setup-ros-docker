@@ -33,7 +33,7 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
     --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-case $(lab_release -sc) in
+case $(lsb_release -sc) in
     "bionic")
         ROSDEP_APT_PACKAGE="python-rosdep"
         ;;
@@ -45,7 +45,7 @@ esac
 case ${ROS_DISTRO} in
     "none")
 		RTI_CONNEXT_DDS=""
-		case $(lab_release -sc) in
+		case $(lsb_release -sc) in
 			"bionic")
 				echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/ros-latest.list
 				;;
