@@ -60,7 +60,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [melodic, noetic, foxy, galactic, rolling]
+          ros_distro: [melodic, noetic, foxy, galactic, humble, rolling]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -103,6 +103,16 @@ jobs:
             base_image_tag: focal
             ros_variant: ros-base
             output_image_tag: ubuntu-focal-ros-galactic-ros-base
+
+          # Humble Hawksbill (May 2022 - May 2027)
+          - ros_distro: humble
+            base_image_tag: jammy
+            ros_variant: desktop
+            output_image_tag: ubuntu-jammy-ros-humble-desktop
+          - ros_distro: humble
+            base_image_tag: jammy
+            ros_variant: ros-base
+            output_image_tag: ubuntu-jammy-ros-humble-ros-base
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
