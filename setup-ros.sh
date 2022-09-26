@@ -64,7 +64,7 @@ case ${ROS_DISTRO} in
         ;;
 esac
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ROS_VERSION}/ubuntu $(lsb_release -sc) main" |\
-  tee /etc/apt/sources.list.d/ros2.list > /dev/null
+  tee /etc/apt/sources.list.d/${ROS_VERSION}.list > /dev/null
 
 apt-get update
 
