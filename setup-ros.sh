@@ -21,7 +21,7 @@ echo 'Etc/UTC' > /etc/timezone
 apt-get update
 
 apt-get install --no-install-recommends --quiet --yes \
-    curl gnupg2 locales lsb-release
+    ca-certificates curl gnupg2 locales lsb-release
 
 locale-gen en_US en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -30,8 +30,8 @@ ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
 apt-get install --no-install-recommends --quiet --yes tzdata
 
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
-    --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+update-ca-certificates
+curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 
 case $(lsb_release -sc) in
     "bionic")
@@ -42,27 +42,29 @@ case $(lsb_release -sc) in
         ;;
 esac
 
+ros_version="ros"
+RTI_CONNEXT_DDS=""
 case ${ROS_DISTRO} in
     "none")
-		RTI_CONNEXT_DDS=""
 		case $(lsb_release -sc) in
 			"bionic")
-				echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/ros-latest.list
+				ros_version="ros"
 				;;
 			*)
-				echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/ros-latest.list
+				ros_version="ros2"
 				;;
 		esac
 		;;
     "melodic" | "noetic")
-        RTI_CONNEXT_DDS=""
-        echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/ros-latest.list
+		ros_version="ros"
         ;;
     *)
         RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
-        echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/ros-latest.list
+		ros_version="ros2"
         ;;
 esac
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ros_version}/ubuntu $(lsb_release -sc) main" |\
+  tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
 apt-get update
 
