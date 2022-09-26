@@ -42,28 +42,28 @@ case $(lsb_release -sc) in
         ;;
 esac
 
-ros_version="ros"
+ROS_VERSION="ros"
 RTI_CONNEXT_DDS=""
 case ${ROS_DISTRO} in
     "none")
 		case $(lsb_release -sc) in
 			"bionic")
-				ros_version="ros"
+				ROS_VERSION="ros"
 				;;
 			*)
-				ros_version="ros2"
+				ROS_VERSION="ros2"
 				;;
 		esac
 		;;
     "melodic" | "noetic")
-		ros_version="ros"
+		ROS_VERSION="ros"
         ;;
     *)
         RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
-		ros_version="ros2"
+		ROS_VERSION="ros2"
         ;;
 esac
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ros_version}/ubuntu $(lsb_release -sc) main" |\
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ROS_VERSION}/ubuntu $(lsb_release -sc) main" |\
   tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
 apt-get update
