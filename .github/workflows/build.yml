@@ -60,7 +60,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [melodic, noetic, foxy, galactic, humble, rolling]
+          ros_distro: [melodic, noetic, foxy, humble, iron, rolling]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -94,16 +94,6 @@ jobs:
             ros_variant: ros-base
             output_image_tag: ubuntu-focal-ros-foxy-ros-base
 
-          # Galactic Geochelone (May 2021 - November 2022)
-          - ros_distro: galactic
-            base_image_tag: focal
-            ros_variant: desktop
-            output_image_tag: ubuntu-focal-ros-galactic-desktop
-          - ros_distro: galactic
-            base_image_tag: focal
-            ros_variant: ros-base
-            output_image_tag: ubuntu-focal-ros-galactic-ros-base
-
           # Humble Hawksbill (May 2022 - May 2027)
           - ros_distro: humble
             base_image_tag: jammy
@@ -114,15 +104,17 @@ jobs:
             ros_variant: ros-base
             output_image_tag: ubuntu-jammy-ros-humble-ros-base
 
-          # Rolling Ridley (June 2020 - Ongoing)
-          - ros_distro: rolling
-            base_image_tag: focal
+          # Iron Irwini (May 2023 - November 2024)
+          - ros_distro: iron
+            base_image_tag: jammy
             ros_variant: desktop
-            output_image_tag: ubuntu-focal-ros-rolling-desktop
-          - ros_distro: rolling
-            base_image_tag: focal
+            output_image_tag: ubuntu-jammy-ros-iron-desktop
+          - ros_distro: iron
+            base_image_tag: jammy
             ros_variant: ros-base
-            output_image_tag: ubuntu-focal-ros-rolling-ros-base
+            output_image_tag: ubuntu-jammy-ros-iron-ros-base
+
+          # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
             base_image_tag: jammy
             ros_variant: desktop
