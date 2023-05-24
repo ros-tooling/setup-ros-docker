@@ -116,14 +116,6 @@ jobs:
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
-            base_image_tag: focal
-            ros_variant: desktop
-            output_image_tag: ubuntu-focal-ros-rolling-desktop
-          - ros_distro: rolling
-            base_image_tag: focal
-            ros_variant: ros-base
-            output_image_tag: ubuntu-focal-ros-rolling-ros-base
-          - ros_distro: rolling
             base_image_tag: jammy
             ros_variant: desktop
             output_image_tag: ubuntu-jammy-ros-rolling-desktop
