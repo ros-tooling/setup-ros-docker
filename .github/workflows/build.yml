@@ -60,19 +60,9 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [melodic, noetic, foxy, humble, iron, rolling]
+          ros_distro: [noetic, humble, iron, rolling]
           ros_variant: [desktop, ros-base]
           include:
-
-          # Melodic Morenia (May 2018 - May 2023)
-          - ros_distro: melodic
-            base_image_tag: bionic
-            ros_variant: desktop
-            output_image_tag: ubuntu-bionic-ros-melodic-desktop
-          - ros_distro: melodic
-            base_image_tag: bionic
-            ros_variant: ros-base
-            output_image_tag: ubuntu-bionic-ros-melodic-ros-base
 
           # Noetic Ninjemys (May 2020 - May 2025)
           - ros_distro: noetic
@@ -83,16 +73,6 @@ jobs:
             base_image_tag: focal
             ros_variant: ros-base
             output_image_tag: ubuntu-focal-ros-noetic-ros-base
-
-          # Foxy Fitzroy (May 2020 - May 2023)
-          - ros_distro: foxy
-            base_image_tag: focal
-            ros_variant: desktop
-            output_image_tag: ubuntu-focal-ros-foxy-desktop
-          - ros_distro: foxy
-            base_image_tag: focal
-            ros_variant: ros-base
-            output_image_tag: ubuntu-focal-ros-foxy-ros-base
 
           # Humble Hawksbill (May 2022 - May 2027)
           - ros_distro: humble

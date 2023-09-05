@@ -55,7 +55,7 @@ case ${ROS_DISTRO} in
 				;;
 		esac
 		;;
-    "melodic" | "noetic")
+    "noetic")
 		ROS_VERSION="ros"
         ;;
     *)
