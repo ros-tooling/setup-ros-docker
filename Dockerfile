@@ -26,7 +26,7 @@ ARG ROS_DISTRO
 # Additional APT packages to be installed
 #
 # This is used to build Docker images incorporating various ROS, or ROS 2
-# distributions. E.g. "ros-melodic-desktop ros-eloquent-desktop"
+# distributions. E.g. "ros-rolling-desktop"
 ARG EXTRA_APT_PACKAGES
 
 # See http://label-schema.org/rc1/ for label documentation
