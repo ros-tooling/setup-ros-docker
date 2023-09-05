@@ -1,7 +1,6 @@
 # Base Linux distribution used to build the Docker image
 #
 # The script has been tested against:
-# - ubuntu:bionic
 # - ubuntu:focal
 # - ubuntu:jammy
 #
@@ -11,7 +10,7 @@
 # This script will not work with non-APT based Linux distributions.
 ARG BASE_IMAGE_NAME
 
-# Base Linux distribution version (one of "bionic", "focal", "jammy")
+# Base Linux distribution version (one of "focal", "jammy")
 
 ARG BASE_IMAGE_TAG
 

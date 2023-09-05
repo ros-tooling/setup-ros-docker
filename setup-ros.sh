@@ -33,28 +33,9 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 update-ca-certificates
 curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 
-case $(lsb_release -sc) in
-    "bionic")
-        ROSDEP_APT_PACKAGE="python-rosdep"
-        ;;
-    *)
-        ROSDEP_APT_PACKAGE="python3-rosdep"
-        ;;
-esac
-
 ROS_VERSION="ros"
 RTI_CONNEXT_DDS=""
 case ${ROS_DISTRO} in
-    "none")
-		case $(lsb_release -sc) in
-			"bionic")
-				ROS_VERSION="ros"
-				;;
-			*)
-				ROS_VERSION="ros2"
-				;;
-		esac
-		;;
     "noetic")
 		ROS_VERSION="ros"
         ;;
@@ -85,7 +66,7 @@ apt-get install --no-install-recommends --quiet --yes \
 	python3-pip \
 	python3-vcstool \
 	python3-wheel \
-	${ROSDEP_APT_PACKAGE} \
+	python3-rosdep \
 	${RTI_CONNEXT_DDS} \
 	wget
 
