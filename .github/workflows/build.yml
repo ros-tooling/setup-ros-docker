@@ -22,26 +22,26 @@ jobs:
     steps:
       -
         name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       -
         name: Set up docker buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
       -
         name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       -
         name: Login to Github Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64
@@ -68,40 +68,48 @@ jobs:
           - ros_distro: noetic
             base_image_tag: focal
             ros_variant: desktop
+            rmw_implementations:
             output_image_tag: ubuntu-focal-ros-noetic-desktop
           - ros_distro: noetic
             base_image_tag: focal
             ros_variant: ros-base
+            rmw_implementations:
             output_image_tag: ubuntu-focal-ros-noetic-ros-base
 
           # Humble Hawksbill (May 2022 - May 2027)
           - ros_distro: humble
             base_image_tag: jammy
             ros_variant: desktop
+            rmw_implementations: ros-humble-rmw-fastrtps-cpp,ros-humble-rmw-cyclonedds-cpp,ros-humble-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-humble-desktop
           - ros_distro: humble
             base_image_tag: jammy
             ros_variant: ros-base
+            rmw_implementations: ros-humble-rmw-fastrtps-cpp,ros-humble-rmw-cyclonedds-cpp,ros-humble-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-humble-ros-base
 
           # Iron Irwini (May 2023 - November 2024)
           - ros_distro: iron
             base_image_tag: jammy
             ros_variant: desktop
+            rmw_implementations: ros-iron-rmw-fastrtps-cpp,ros-iron-rmw-cyclonedds-cpp,ros-iron-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-iron-desktop
           - ros_distro: iron
             base_image_tag: jammy
             ros_variant: ros-base
+            rmw_implementations: ros-iron-rmw-fastrtps-cpp,ros-iron-rmw-cyclonedds-cpp,ros-iron-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-iron-ros-base
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
             base_image_tag: jammy
             ros_variant: desktop
+            rmw_implementations: ros-rolling-rmw-fastrtps-cpp,ros-rolling-rmw-cyclonedds-cpp,ros-rolling-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-rolling-desktop
           - ros_distro: rolling
             base_image_tag: jammy
             ros_variant: ros-base
+            rmw_implementations: ros-rolling-rmw-fastrtps-cpp,ros-rolling-rmw-cyclonedds-cpp,ros-rolling-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-rolling-ros-base
 
     name: "${{ matrix.output_image_tag }}"
@@ -111,26 +119,26 @@ jobs:
     steps:
     -
       name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     -
       name: Set up docker buildx
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-buildx-action@v3
     -
       name: Login to DockerHub
-      uses: docker/login-action@v1
+      uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     -
       name: Login to Github Container Registry
-      uses: docker/login-action@v1
+      uses: docker/login-action@v3
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
     -
       name: Build and push
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5
       with:
         context: .
         platforms: linux/amd64
@@ -138,7 +146,7 @@ jobs:
         build-args: |
           BASE_IMAGE_NAME=${{ matrix.base_image_name }}
           BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
-          EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }}
+          EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }},${{ matrix.rmw_implementations }}
           VCS_REF=${{ github.sha }}
           ROS_DISTRO=${{ matrix.ros_distro }}
         tags: |
