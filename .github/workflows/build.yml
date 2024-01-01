@@ -20,27 +20,17 @@ jobs:
     # when it comes to building docker images.
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-      -
-        name: Set up docker buildx
+      - name: Set up docker buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Login to Github Container Registry
+      - name: Login to Github Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -52,8 +42,7 @@ jobs:
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=none
           tags: |
-            rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest
-            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}:master
+            ghcr.io/ros-tooling/setup-ros-docker/${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}:latest
 
   build_ubuntu_docker_image_ros:
     strategy:
@@ -61,7 +50,7 @@ jobs:
       matrix:
           base_image_name: [ubuntu]
           ros_distro: [noetic, humble, iron, rolling]
-          ros_variant: [desktop, ros-base]
+          ros_variant: [ros-core, ros-base, desktop]
           include:
 
           # Noetic Ninjemys (May 2020 - May 2025)
@@ -117,27 +106,17 @@ jobs:
     # when it comes to building docker images.
     runs-on: ubuntu-latest
     steps:
-    -
-      name: Checkout repository
+    - name: Checkout repository
       uses: actions/checkout@v4
-    -
-      name: Set up docker buildx
+    - name: Set up docker buildx
       uses: docker/setup-buildx-action@v3
-    -
-      name: Login to DockerHub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-    -
-      name: Login to Github Container Registry
+    - name: Login to Github Container Registry
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    -
-      name: Build and push
+    - name: Build and push
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -150,5 +129,4 @@ jobs:
           VCS_REF=${{ github.sha }}
           ROS_DISTRO=${{ matrix.ros_distro }}
         tags: |
-          rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest
-          ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.output_image_tag }}:master
+          ghcr.io/ros-tooling/setup-ros-docker/${{ matrix.output_image_tag }}:latest
