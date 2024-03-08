@@ -3,6 +3,7 @@
 # The script has been tested against:
 # - ubuntu:focal
 # - ubuntu:jammy
+# - ubuntu:noble
 #
 # Do not pass directly "X:Y" to BASE_IMAGE_NAME, only pass the image name.
 # The version must be specified separately in BASE_IMAGE_TAG.
@@ -10,7 +11,7 @@
 # This script will not work with non-APT based Linux distributions.
 ARG BASE_IMAGE_NAME
 
-# Base Linux distribution version (one of "focal", "jammy")
+# Base Linux distribution version (one of "focal", "jammy", "noble")
 
 ARG BASE_IMAGE_TAG
 
@@ -44,4 +45,4 @@ RUN for i in $(echo ${EXTRA_APT_PACKAGES} | tr ',' ' '); do \
         apt-get install --yes --no-install-recommends "$i"; \
     done
 # ROS 1 installations clobber this - it doesn't affect ROS 2
-RUN pip3 install -U catkin_pkg
+RUN if [ "noble" = "$(lsb_release -cs)" ]; then pip3 install -U catkin_pkg --break-system-packages; else pip3 install -U catkin_pkg; fi
