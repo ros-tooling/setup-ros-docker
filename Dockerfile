@@ -1,20 +1,7 @@
-# Base Linux distribution used to build the Docker image
-#
-# The script has been tested against:
-# - ubuntu:focal
-# - ubuntu:jammy
-#
-# Do not pass directly "X:Y" to BASE_IMAGE_NAME, only pass the image name.
-# The version must be specified separately in BASE_IMAGE_TAG.
-#
-# This script will not work with non-APT based Linux distributions.
-ARG BASE_IMAGE_NAME
-
-# Base Linux distribution version (one of "focal", "jammy")
-
-ARG BASE_IMAGE_TAG
-
-FROM "${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}"
+# Base Linux image used to build this image.
+# Note: This Dockerfile only works for APT-based Linux distributions.
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 # Commit ID this image is based upon
 ARG VCS_REF
