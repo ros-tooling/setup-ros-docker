@@ -21,7 +21,7 @@ echo 'Etc/UTC' > /etc/timezone
 apt-get update
 
 apt-get install --no-install-recommends --quiet --yes \
-    ca-certificates curl gnupg2 locales lsb-release
+	ca-certificates curl gnupg2 locales lsb-release
 
 locale-gen en_US en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -36,16 +36,16 @@ curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr
 ROS_VERSION="ros"
 RTI_CONNEXT_DDS=""
 case ${ROS_DISTRO} in
-    "noetic")
+	"noetic")
 		ROS_VERSION="ros"
-        ;;
-    *)
-        RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
+		;;
+	*)
+		RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
 		ROS_VERSION="ros2"
-        ;;
+		;;
 esac
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ROS_VERSION}/ubuntu $(lsb_release -sc) main" |\
-  tee /etc/apt/sources.list.d/${ROS_VERSION}.list > /dev/null
+	tee /etc/apt/sources.list.d/${ROS_VERSION}.list > /dev/null
 
 apt-get update
 
@@ -74,14 +74,8 @@ apt-get install --no-install-recommends --quiet --yes \
 # install it, but won't fail if it does not suceed.
 apt-get install --no-install-recommends --quiet --yes libopensplice69 || true
 
-# Get the latest version of pip before installing dependencies,
-# the version from apt can be very out of date (v8.0 on xenial)
-# The latest version of pip doesn't support Python3.5 as of v21,
-# but pip 8 doesn't understand the metadata that states this, so we must first
-# make an intermediate upgrade to pip 20, which does understand that information
-python3 -m pip install --upgrade pip==20.*
-python3 -m pip install --upgrade pip
-
+# Required to install pip packages outside a venv with pip >=23.0.1 (older versions will ignore it)
+export PIP_BREAK_SYSTEM_PACKAGES=1
 pip3 install --upgrade \
 	argcomplete \
 	catkin_pkg \
@@ -127,15 +121,23 @@ pip3 install --upgrade \
 	nose \
 	pep8 \
 	pydocstyle \
-	pyparsing \
 	pytest \
 	pytest-cov \
 	pytest-mock \
 	pytest-repeat \
 	pytest-rerunfailures \
 	pytest-runner \
-	setuptools \
-	wheel
+	setuptools
+UBUNTU_VERSION=$(lsb_release -cs)
+case ${UBUNTU_VERSION} in
+	"noble")
+		;;
+	*)
+		pip3 install --upgrade \
+			pyparsing \
+			wheel
+		;;
+esac
 
 rosdep init
 

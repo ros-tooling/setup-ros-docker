@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          base_image_tag: [focal, jammy]
+          base_image_tag: [focal, jammy, noble]
     name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
@@ -102,15 +102,15 @@ jobs:
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
-            base_image_tag: jammy
+            base_image_tag: noble
             ros_variant: desktop
             rmw_implementations: ros-rolling-rmw-fastrtps-cpp,ros-rolling-rmw-cyclonedds-cpp,ros-rolling-rmw-connextdds
-            output_image_tag: ubuntu-jammy-ros-rolling-desktop
+            output_image_tag: ubuntu-noble-ros-rolling-desktop
           - ros_distro: rolling
-            base_image_tag: jammy
+            base_image_tag: noble
             ros_variant: ros-base
             rmw_implementations: ros-rolling-rmw-fastrtps-cpp,ros-rolling-rmw-cyclonedds-cpp,ros-rolling-rmw-connextdds
-            output_image_tag: ubuntu-jammy-ros-rolling-ros-base
+            output_image_tag: ubuntu-noble-ros-rolling-ros-base
 
     name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact
