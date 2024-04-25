@@ -60,7 +60,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [noetic, humble, iron, rolling]
+          ros_distro: [noetic, humble, iron, jazzy, rolling]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -99,6 +99,18 @@ jobs:
             ros_variant: ros-base
             rmw_implementations: ros-iron-rmw-fastrtps-cpp,ros-iron-rmw-cyclonedds-cpp,ros-iron-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-iron-ros-base
+
+          # Jazzy Jalisco (May 2024 - May 2029)
+          - ros_distro: jazzy
+            base_image_tag: noble
+            ros_variant: desktop
+            rmw_implementations: ros-jazzy-rmw-fastrtps-cpp,ros-jazzy-rmw-cyclonedds-cpp,ros-jazzy-rmw-connextdds
+            output_image_tag: ubuntu-noble-ros-jazzy-desktop
+          - ros_distro: jazzy
+            base_image_tag: noble
+            ros_variant: ros-base
+            rmw_implementations: ros-jazzy-rmw-fastrtps-cpp,ros-jazzy-rmw-cyclonedds-cpp,ros-jazzy-rmw-connextdds
+            output_image_tag: ubuntu-noble-ros-jazzy-ros-base
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
