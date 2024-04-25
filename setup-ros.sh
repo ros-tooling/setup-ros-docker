@@ -39,6 +39,11 @@ case ${ROS_DISTRO} in
 	"noetic")
 		ROS_VERSION="ros"
 		;;
+	# Use ros2-testing repo for Jazzy before it's officially release
+	"jazzy")
+		RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
+		ROS_VERSION="ros2-testing"
+		;;
 	*)
 		RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
 		ROS_VERSION="ros2"
