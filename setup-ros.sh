@@ -54,93 +54,129 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 
 apt-get update
 
-DEBIAN_FRONTEND=noninteractive \
-RTI_NC_LICENSE_ACCEPTED=yes \
-apt-get install --no-install-recommends --quiet --yes \
-	build-essential \
-	clang \
-	cmake \
-	git \
-	lcov \
-	libasio-dev \
-	libc++-dev \
-	libc++abi-dev \
-	libssl-dev \
-	libtinyxml2-dev \
-	python3-dev \
-	python3-pip \
-	python3-vcstool \
-	python3-wheel \
-	python3-rosdep \
-	${RTI_CONNEXT_DDS} \
-	wget
-
-# libopensplice69 does not exist on Ubuntu 20.04, so we're attempting to
-# install it, but won't fail if it does not suceed.
-apt-get install --no-install-recommends --quiet --yes libopensplice69 || true
-
 # Required to install pip packages outside a venv with pip >=23.0.1 (older versions will ignore it)
 export PIP_BREAK_SYSTEM_PACKAGES=1
-pip3 install --upgrade \
-	argcomplete \
-	catkin_pkg \
-	colcon-bash==0.4.2 \
-	colcon-cd==0.1.1 \
-	colcon-cmake==0.2.22 \
-	colcon-common-extensions==0.2.1 \
-	colcon-core==0.15.1 \
-	colcon-coveragepy-result==0.0.8 \
-	colcon-defaults==0.2.7 \
-	colcon-lcov-result==0.5.0 \
-	colcon-library-path==0.2.1 \
-	colcon-metadata==0.2.5 \
-	colcon-mixin==0.2.2 \
-	colcon-notification==0.2.15 \
-	colcon-output==0.2.12 \
-	colcon-package-information==0.3.3 \
-	colcon-package-selection==0.2.10 \
-	colcon-parallel-executor==0.2.4 \
-	colcon-pkg-config==0.1.0 \
-	colcon-powershell==0.3.7 \
-	colcon-python-setup-py==0.2.7 \
-	colcon-recursive-crawl==0.2.1 \
-	colcon-ros==0.3.23 \
-	colcon-test-result==0.3.8 \
-	coverage \
-	cryptography \
-	"empy<4" \
-	"flake8<3.8" \
-	flake8-blind-except \
-	flake8-builtins \
-	flake8-class-newline \
-	flake8-comprehensions \
-	flake8-deprecated \
-	flake8-docstrings \
-	flake8-import-order \
-	flake8-quotes \
-	ifcfg \
-	importlib-metadata==2.* \
-	lark-parser \
-	mock \
-	mypy \
-	nose \
-	pep8 \
-	pydocstyle \
-	pytest \
-	pytest-cov \
-	pytest-mock \
-	pytest-repeat \
-	pytest-rerunfailures \
-	pytest-runner \
-	setuptools
 UBUNTU_VERSION=$(lsb_release -cs)
 case ${UBUNTU_VERSION} in
 	"noble")
+		# For 24.04, install using apt only
+		# Basics
+		apt-get install --no-install-recommends --quiet --yes \
+			clang \
+			lcov \
+			libc++-dev \
+			libc++abi-dev \
+			libssl-dev \
+			python3-dev
+		# Core, including some extra colcon packages and flake8 plugins
+		apt-get install --no-install-recommends --quiet --yes \
+			ros-dev-tools \
+			python3-pip \
+			python3-pytest-cov \
+			python3-flake8-blind-except \
+			python3-flake8-class-newline \
+			python3-flake8-deprecated \
+			python3-pytest-repeat \
+			python3-pytest-rerunfailures \
+			python3-flake8-docstrings \
+			python3-flake8-builtins \
+			python3-flake8-comprehensions \
+			python3-flake8-import-order \
+			python3-flake8-quotes \
+			python3-colcon-coveragepy-result \
+			python3-colcon-lcov-result \
+			python3-colcon-meson \
+			python3-colcon-mixin
+		# Fast DDS dependencies
+		apt-get install --no-install-recommends --quiet --yes \
+			libasio-dev \
+			libtinyxml2-dev
+		# RTI Connext
+		DEBIAN_FRONTEND=noninteractive RTI_NC_LICENSE_ACCEPTED=yes \
+			apt-get install --no-install-recommends --quiet --yes \
+				${RTI_CONNEXT_DDS}
 		;;
 	*)
+		# For 22.04 and older, install with a mix of apt and pip
+		apt-get install --no-install-recommends --quiet --yes \
+			build-essential \
+			clang \
+			cmake \
+			git \
+			lcov \
+			libasio-dev \
+			libc++-dev \
+			libc++abi-dev \
+			libssl-dev \
+			libtinyxml2-dev \
+			python3-dev \
+			python3-pip \
+			python3-vcstool \
+			python3-wheel \
+			python3-rosdep \
+			wget
 		pip3 install --upgrade \
+			argcomplete \
+			catkin_pkg \
+			colcon-bash==0.4.2 \
+			colcon-cd==0.1.1 \
+			colcon-cmake==0.2.22 \
+			colcon-common-extensions==0.2.1 \
+			colcon-core==0.15.1 \
+			colcon-coveragepy-result==0.0.8 \
+			colcon-defaults==0.2.7 \
+			colcon-lcov-result==0.5.0 \
+			colcon-library-path==0.2.1 \
+			colcon-metadata==0.2.5 \
+			colcon-mixin==0.2.2 \
+			colcon-notification==0.2.15 \
+			colcon-output==0.2.12 \
+			colcon-package-information==0.3.3 \
+			colcon-package-selection==0.2.10 \
+			colcon-parallel-executor==0.2.4 \
+			colcon-pkg-config==0.1.0 \
+			colcon-powershell==0.3.7 \
+			colcon-python-setup-py==0.2.7 \
+			colcon-recursive-crawl==0.2.1 \
+			colcon-ros==0.3.23 \
+			colcon-test-result==0.3.8 \
+			coverage \
+			cryptography \
+			"empy<4" \
+			"flake8<3.8" \
+			flake8-blind-except \
+			flake8-builtins \
+			flake8-class-newline \
+			flake8-comprehensions \
+			flake8-deprecated \
+			flake8-docstrings \
+			flake8-import-order \
+			flake8-quotes \
+			ifcfg \
+			importlib-metadata==2.* \
+			lark-parser \
+			mock \
+			mypy \
+			nose \
+			pep8 \
+			pydocstyle \
+			pytest \
+			pytest-cov \
+			pytest-mock \
+			pytest-repeat \
+			pytest-rerunfailures \
+			pytest-runner \
+			setuptools \
 			pyparsing \
 			wheel
+		# RTI Connext
+		DEBIAN_FRONTEND=noninteractive \
+			RTI_NC_LICENSE_ACCEPTED=yes \
+			apt-get install --no-install-recommends --quiet --yes \
+				${RTI_CONNEXT_DDS}
+		# libopensplice69 does not exist on Ubuntu 20.04 and later, so we're attempting to
+		# install it, but won't fail if it does not suceed.
+		apt-get install --no-install-recommends --quiet --yes libopensplice69 || true
 		;;
 esac
 
