@@ -58,8 +58,8 @@ apt-get update
 export PIP_BREAK_SYSTEM_PACKAGES=1
 UBUNTU_VERSION=$(lsb_release -cs)
 case ${UBUNTU_VERSION} in
-	"noble")
-		# For 24.04, install using apt only
+	"noble" | "jammy")
+		# For 24.04 and 22.04, install using apt only
 		# Basics
 		apt-get install --no-install-recommends --quiet --yes \
 			clang \
@@ -96,8 +96,8 @@ case ${UBUNTU_VERSION} in
 			apt-get install --no-install-recommends --quiet --yes \
 				${RTI_CONNEXT_DDS}
 		;;
-	*)
-		# For 22.04 and older, install with a mix of apt and pip
+	"focal")
+		# For 20.04, install with a mix of apt and pip
 		apt-get install --no-install-recommends --quiet --yes \
 			build-essential \
 			clang \
@@ -169,14 +169,10 @@ case ${UBUNTU_VERSION} in
 			setuptools \
 			pyparsing \
 			wheel
-		# RTI Connext
-		DEBIAN_FRONTEND=noninteractive \
-			RTI_NC_LICENSE_ACCEPTED=yes \
-			apt-get install --no-install-recommends --quiet --yes \
-				${RTI_CONNEXT_DDS}
-		# libopensplice69 does not exist on Ubuntu 20.04 and later, so we're attempting to
-		# install it, but won't fail if it does not suceed.
-		apt-get install --no-install-recommends --quiet --yes libopensplice69 || true
+		;;
+	*)
+		echo "${UBUNTU_VERSION} not supported"
+		exit 1
 		;;
 esac
 
