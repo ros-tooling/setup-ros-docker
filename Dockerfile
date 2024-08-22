@@ -40,7 +40,7 @@ LABEL org.label-schema.vendor="ROS Tooling Working Group"
 
 COPY setup-ros.sh /tmp/setup-ros.sh
 RUN /tmp/setup-ros.sh "${ROS_DISTRO}" && rm -f /tmp/setup-ros.sh
-ENV LANG en_US.UTF-8
+ENV LANG=en_US.UTF-8
 RUN for i in $(echo ${EXTRA_APT_PACKAGES} | tr ',' ' '); do \
         apt-get install --yes --no-install-recommends "$i"; \
     done
