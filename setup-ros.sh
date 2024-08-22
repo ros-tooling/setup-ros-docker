@@ -161,7 +161,7 @@ case ${UBUNTU_VERSION} in
 			pytest-repeat \
 			pytest-rerunfailures \
 			pytest-runner \
-			setuptools \
+			setuptools==58.2.0 \
 			pyparsing \
 			wheel
 		;;
