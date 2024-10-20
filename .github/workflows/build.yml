@@ -20,40 +20,28 @@ jobs:
     # when it comes to building docker images.
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-      -
-        name: Set up docker buildx
+      - name: Set up docker buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Login to Github Container Registry
+      - name: Login to Github Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           build-args: |
-            BASE_IMAGE_NAME=${{ matrix.base_image_name }}
-            BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
+            BASE_IMAGE=${{ matrix.base_image_name }}:${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=none
           tags: |
-            rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest
-            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}:master
+            ghcr.io/ros-tooling/setup-ros-docker/${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}:latest
 
   build_ubuntu_docker_image_ros:
     strategy:
@@ -61,7 +49,7 @@ jobs:
       matrix:
           base_image_name: [ubuntu]
           ros_distro: [noetic, humble, iron, jazzy, rolling]
-          ros_variant: [desktop, ros-base]
+          ros_variant: [ros-core, ros-base, desktop]
           include:
 
           # Noetic Ninjemys (May 2020 - May 2025)
@@ -75,6 +63,11 @@ jobs:
             ros_variant: ros-base
             rmw_implementations:
             output_image_tag: ubuntu-focal-ros-noetic-ros-base
+          - ros_distro: noetic
+            base_image_tag: focal
+            ros_variant: ros-core
+            rmw_implementations:
+            output_image_tag: ubuntu-focal-ros-noetic-ros-core
 
           # Humble Hawksbill (May 2022 - May 2027)
           - ros_distro: humble
@@ -87,6 +80,11 @@ jobs:
             ros_variant: ros-base
             rmw_implementations: ros-humble-rmw-fastrtps-cpp,ros-humble-rmw-cyclonedds-cpp,ros-humble-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-humble-ros-base
+          - ros_distro: humble
+            base_image_tag: jammy
+            ros_variant: ros-core
+            rmw_implementations: ros-humble-rmw-fastrtps-cpp,ros-humble-rmw-cyclonedds-cpp,ros-humble-rmw-connextdds
+            output_image_tag: ubuntu-jammy-ros-humble-ros-core
 
           # Iron Irwini (May 2023 - November 2024)
           - ros_distro: iron
@@ -99,6 +97,11 @@ jobs:
             ros_variant: ros-base
             rmw_implementations: ros-iron-rmw-fastrtps-cpp,ros-iron-rmw-cyclonedds-cpp,ros-iron-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-iron-ros-base
+          - ros_distro: iron
+            base_image_tag: jammy
+            ros_variant: ros-core
+            rmw_implementations: ros-iron-rmw-fastrtps-cpp,ros-iron-rmw-cyclonedds-cpp,ros-iron-rmw-connextdds
+            output_image_tag: ubuntu-jammy-ros-iron-ros-core
 
           # Jazzy Jalisco (May 2024 - May 2029)
           - ros_distro: jazzy
@@ -129,38 +132,26 @@ jobs:
     # when it comes to building docker images.
     runs-on: ubuntu-latest
     steps:
-    -
-      name: Checkout repository
+    - name: Checkout repository
       uses: actions/checkout@v4
-    -
-      name: Set up docker buildx
+    - name: Set up docker buildx
       uses: docker/setup-buildx-action@v3
-    -
-      name: Login to DockerHub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-    -
-      name: Login to Github Container Registry
+    - name: Login to Github Container Registry
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    -
-      name: Build and push
+    - name: Build and push
       uses: docker/build-push-action@v5
       with:
         context: .
         platforms: linux/amd64,linux/arm64
         push: ${{ github.event_name != 'pull_request' }}
         build-args: |
-          BASE_IMAGE_NAME=${{ matrix.base_image_name }}
-          BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
+          BASE_IMAGE=${{ matrix.base_image_name }}:${{ matrix.base_image_tag }}
           EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }},${{ matrix.rmw_implementations }}
           VCS_REF=${{ github.sha }}
           ROS_DISTRO=${{ matrix.ros_distro }}
         tags: |
-          rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest
-          ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.output_image_tag }}:master
+          ghcr.io/ros-tooling/setup-ros-docker/${{ matrix.output_image_tag }}:latest
