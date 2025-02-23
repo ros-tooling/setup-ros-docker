@@ -60,7 +60,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [noetic, humble, iron, jazzy, rolling]
+          ros_distro: [noetic, humble, jazzy, rolling]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -87,18 +87,6 @@ jobs:
             ros_variant: ros-base
             rmw_implementations: ros-humble-rmw-fastrtps-cpp,ros-humble-rmw-cyclonedds-cpp,ros-humble-rmw-connextdds
             output_image_tag: ubuntu-jammy-ros-humble-ros-base
-
-          # Iron Irwini (May 2023 - November 2024)
-          - ros_distro: iron
-            base_image_tag: jammy
-            ros_variant: desktop
-            rmw_implementations: ros-iron-rmw-fastrtps-cpp,ros-iron-rmw-cyclonedds-cpp,ros-iron-rmw-connextdds
-            output_image_tag: ubuntu-jammy-ros-iron-desktop
-          - ros_distro: iron
-            base_image_tag: jammy
-            ros_variant: ros-base
-            rmw_implementations: ros-iron-rmw-fastrtps-cpp,ros-iron-rmw-cyclonedds-cpp,ros-iron-rmw-connextdds
-            output_image_tag: ubuntu-jammy-ros-iron-ros-base
 
           # Jazzy Jalisco (May 2024 - May 2029)
           - ros_distro: jazzy
