@@ -18,7 +18,7 @@ jobs:
     name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       -
         name: Checkout repository
@@ -118,7 +118,7 @@ jobs:
     name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     -
       name: Checkout repository
