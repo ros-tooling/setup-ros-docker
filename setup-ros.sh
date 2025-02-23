@@ -59,8 +59,6 @@ case ${UBUNTU_VERSION} in
 		apt-get install --no-install-recommends --quiet --yes \
 			clang \
 			lcov \
-			libc++-dev \
-			libc++abi-dev \
 			libssl-dev \
 			python3-dev
 		# Core, including some extra colcon packages and flake8 plugins
