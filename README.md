@@ -22,5 +22,10 @@ So for example:
 
 While this repository does provide ROS variant-preinstalled images, its most useful output is the base OS images which are recommended for CI usage to allow for checking proper dependency specification and minimal-as-possible resulting images.
 
-NTOE: parallel work that provides similar but different environment.
-https://github.com/osrf/docker_images also provides docker images with ROS variants already installed, but no "base development setup" images.
+## Note: Parallel and Prior Work
+
+https://github.com/osrf/docker_images provides docker images with ROS variants already installed, but no "base development setup" images
+
+https://github.com/sloretz/ros_oci_images provides the same pre-installed ROS variants, with a faster update cycle
+
+These projects have some similarities, but a different focus from this - which is providing slim CI-focused images with no preinstalled dependencies.
