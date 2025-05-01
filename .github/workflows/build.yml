@@ -13,23 +13,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        platform: [linux/amd64, linux/arm64]
         include:
-          - source_tag: focal
-            target_tag: focal
+          - platform: linux/amd64
+            runner: ubuntu-24.04
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+          - base_image_tag: focal
+            output_image_tag: focal
             ros_version: ros
-          - source_tag: jammy
-            target_tag: jammy
+          - base_image_tag: jammy
+            output_image_tag: jammy
             ros_version: ros2
-          - source_tag: noble
-            target_tag: noble
+          - base_image_tag: noble
+            output_image_tag: noble
             ros_version: ros2
-          - source_tag: noble
-            target_tag: noble-testing
+          - base_image_tag: noble
+            output_image_tag: noble-testing
             ros_version: ros2-testing
-    name: "ubuntu-${{ matrix.target_tag }}"
+    name: "ubuntu-${{ matrix.output_image_tag }} ${{ matrix.platform }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
-    runs-on: ubuntu-latest
+    runs-on: "${{ matrix.runner }}"
     steps:
       -
         name: Checkout repository
@@ -55,17 +60,17 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: "${{ matrix.platform }}"
           push: ${{ github.event_name != 'pull_request' }}
           build-args: |
             BASE_IMAGE_NAME=ubuntu
-            BASE_IMAGE_TAG=${{ matrix.source_tag }}
+            BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=none
             ROS_VERSION=${{ matrix.ros_version }}
           tags: |
-            rostooling/setup-ros-docker:ubuntu-${{ matrix.target_tag }}-latest
-            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-ubuntu-${{ matrix.target_tag }}:latest
+            rostooling/setup-ros-docker:ubuntu-${{ matrix.output_image_tag }}-latest
+            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-ubuntu-${{ matrix.output_image_tag }}:latest
 
   ros_variant:
     strategy:
