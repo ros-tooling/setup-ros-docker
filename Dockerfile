@@ -23,8 +23,8 @@ ARG VCS_REF
 # The ROS distribution being targeted by this image
 ARG ROS_DISTRO
 
-# Override default APT sources, "ros", "ros2, or "ros2-testing"
-ARG ROS_VERSION=''
+# Use ros testing apt repositories instead of main
+ARG ROS_TESTING=''
 
 # Additional APT packages to be installed
 #
