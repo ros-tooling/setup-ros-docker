@@ -3,50 +3,22 @@ set -euxo pipefail
 
 readonly ROS_DISTRO=$1
 
+echo 'Etc/UTC' > /etc/timezone
+DEBIAN_FRONTEND=noninteractive
+
 apt-get update
 apt-get install --no-install-recommends --quiet --yes sudo
-
-# NOTE: this user is added for backward compatibility.
-# Before the resolution of ros-tooling/setup-ros-docker#7 we used `USER rosbuild:rosbuild`
-# and recommended that users of these containers run the following step in their workflow
-# - run: sudo chown -R rosbuild:rosbuild "$HOME" .
-# For repositories that still have this command in their workflow, they would fail if the user
-# did not still exist. This user is no longer used but is just present so that command succeeds.
-groupadd -r rosbuild
-useradd --no-log-init --create-home -r -g rosbuild rosbuild
-echo "rosbuild ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-echo 'Etc/UTC' > /etc/timezone
-
-apt-get update
-
 apt-get install --no-install-recommends --quiet --yes \
 	ca-certificates curl gnupg2 locales lsb-release
 
 locale-gen en_US en_US.UTF-8
 export LANG=en_US.UTF-8
-
 ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
 apt-get install --no-install-recommends --quiet --yes tzdata
 
 update-ca-certificates
 curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-
-RTI_CONNEXT_DDS=""
-
-if [ -z $ROS_VERSION ]; then
-	ROS_VERSION='ros2'
-	case ${ROS_DISTRO} in
-		"noetic")
-			ROS_VERSION="ros"
-			;;
-		*)
-			RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
-			ROS_VERSION="ros2"
-			;;
-	esac
-fi
 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ROS_VERSION}/ubuntu $(lsb_release -sc) main" |\
 	tee /etc/apt/sources.list.d/${ROS_VERSION}.list > /dev/null
@@ -64,9 +36,7 @@ case ${UBUNTU_VERSION} in
 			clang \
 			lcov \
 			libssl-dev \
-			python3-dev
-		# Core, including some extra colcon packages and flake8 plugins
-		apt-get install --no-install-recommends --quiet --yes \
+			python3-dev \
 			ros-dev-tools \
 			python3-pip \
 			python3-pytest-cov \
@@ -84,14 +54,6 @@ case ${UBUNTU_VERSION} in
 			python3-colcon-lcov-result \
 			python3-colcon-meson \
 			python3-colcon-mixin
-		# Fast DDS dependencies
-		apt-get install --no-install-recommends --quiet --yes \
-			libasio-dev \
-			libtinyxml2-dev
-		# RTI Connext
-		DEBIAN_FRONTEND=noninteractive RTI_NC_LICENSE_ACCEPTED=yes \
-			apt-get install --no-install-recommends --quiet --yes \
-				${RTI_CONNEXT_DDS}
 		;;
 	"focal")
 		# For 20.04, install with a mix of apt and pip

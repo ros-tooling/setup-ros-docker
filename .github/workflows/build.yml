@@ -1,4 +1,4 @@
-name: "Build Docker image"
+name: "Build Images"
 on:
   pull_request:
   push:
@@ -13,18 +13,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        platform: [linux/amd64, linux/arm64]
         include:
-          - source_tag: focal
-            target_tag: focal
+          - base_image_tag: focal
+            dest_tag: focal
             ros_version: ros
-          - source_tag: jammy
-            target_tag: jammy
+          - base_image_tag: jammy
+            dest_tag: jammy
             ros_version: ros2
-          - source_tag: noble
+          - base_image_tag: noble
             target_tag: noble
             ros_version: ros2
-          - source_tag: noble
-            target_tag: noble-testing
+          - base_image_tag: noble
+            dest_tag: noble-testing
             ros_version: ros2-testing
     name: "ubuntu-${{ matrix.target_tag }}"
     # always use latest linux worker, as it should not have any impact
@@ -59,108 +60,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           build-args: |
             BASE_IMAGE_NAME=ubuntu
-            BASE_IMAGE_TAG=${{ matrix.source_tag }}
+            BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=none
             ROS_VERSION=${{ matrix.ros_version }}
-          tags: |
-            rostooling/setup-ros-docker:ubuntu-${{ matrix.target_tag }}-latest
-            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-ubuntu-${{ matrix.target_tag }}:latest
-
-  ros_variant:
-    strategy:
-      fail-fast: false
-      matrix:
-          base_image_name: [ubuntu]
-          ros_distro: [noetic, humble, jazzy, rolling]
-          ros_variant: [desktop, ros-base]
-          include:
-
-          # Noetic Ninjemys (May 2020 - May 2025)
-          - ros_distro: noetic
-            base_image_tag: focal
-            ros_variant: desktop
-            rmw_implementations:
-            output_image_tag: ubuntu-focal-ros-noetic-desktop
-          - ros_distro: noetic
-            base_image_tag: focal
-            ros_variant: ros-base
-            rmw_implementations:
-            output_image_tag: ubuntu-focal-ros-noetic-ros-base
-
-          # Humble Hawksbill (May 2022 - May 2027)
-          - ros_distro: humble
-            base_image_tag: jammy
-            ros_variant: desktop
-            rmw_implementations: ros-humble-rmw-fastrtps-cpp,ros-humble-rmw-cyclonedds-cpp,ros-humble-rmw-connextdds
-            output_image_tag: ubuntu-jammy-ros-humble-desktop
-          - ros_distro: humble
-            base_image_tag: jammy
-            ros_variant: ros-base
-            rmw_implementations: ros-humble-rmw-fastrtps-cpp,ros-humble-rmw-cyclonedds-cpp,ros-humble-rmw-connextdds
-            output_image_tag: ubuntu-jammy-ros-humble-ros-base
-
-          # Jazzy Jalisco (May 2024 - May 2029)
-          - ros_distro: jazzy
-            base_image_tag: noble
-            ros_variant: desktop
-            rmw_implementations: ros-jazzy-rmw-fastrtps-cpp,ros-jazzy-rmw-cyclonedds-cpp,ros-jazzy-rmw-connextdds
-            output_image_tag: ubuntu-noble-ros-jazzy-desktop
-          - ros_distro: jazzy
-            base_image_tag: noble
-            ros_variant: ros-base
-            rmw_implementations: ros-jazzy-rmw-fastrtps-cpp,ros-jazzy-rmw-cyclonedds-cpp,ros-jazzy-rmw-connextdds
-            output_image_tag: ubuntu-noble-ros-jazzy-ros-base
-
-          # Rolling Ridley (June 2020 - Ongoing)
-          - ros_distro: rolling
-            base_image_tag: noble
-            ros_variant: desktop
-            rmw_implementations: ros-rolling-rmw-fastrtps-cpp,ros-rolling-rmw-cyclonedds-cpp,ros-rolling-rmw-connextdds
-            output_image_tag: ubuntu-noble-ros-rolling-desktop
-          - ros_distro: rolling
-            base_image_tag: noble
-            ros_variant: ros-base
-            rmw_implementations: ros-rolling-rmw-fastrtps-cpp,ros-rolling-rmw-cyclonedds-cpp,ros-rolling-rmw-connextdds
-            output_image_tag: ubuntu-noble-ros-rolling-ros-base
-
-    name: "${{ matrix.output_image_tag }}"
-    # always use latest linux worker, as it should not have any impact
-    # when it comes to building docker images.
-    runs-on: ubuntu-latest
-    steps:
-    -
-      name: Checkout repository
-      uses: actions/checkout@v4
-    -
-      name: Set up docker buildx
-      uses: docker/setup-buildx-action@v3
-    -
-      name: Login to DockerHub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-    -
-      name: Login to Github Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    -
-      name: Build and push
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        platforms: linux/amd64,linux/arm64
-        push: ${{ github.event_name != 'pull_request' }}
-        build-args: |
-          BASE_IMAGE_NAME=${{ matrix.base_image_name }}
-          BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
-          EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }},${{ matrix.rmw_implementations }}
-          VCS_REF=${{ github.sha }}
-          ROS_DISTRO=${{ matrix.ros_distro }}
-        tags: |
-          rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest
-          ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.output_image_tag }}:master
+          tags: ghcr.io/ros-tooling/setup-ros-docker/ubuntu:${{ matrix.dest_tag }}
