@@ -21,7 +21,7 @@ jobs:
             ros_testing: true
           - base_image_tag: jammy
             ros_testing: true
-    name: "ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing'}} ${{ matrix.platform }}"
+    name: "ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing' || ''}} ${{ matrix.platform }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
     runs-on: ubuntu-24.04${{ matrix.platform == 'linux/arm64' && '-arm' || '' }}
@@ -59,8 +59,8 @@ jobs:
             ROS_DISTRO=none
             ROS_TESTING=${{ matrix.ros_testing && 'true' || '' }}
           tags: |
-            rostooling/setup-ros-docker:ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing'}}-latest
-            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing'}}:latest
+            rostooling/setup-ros-docker:ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing' || ''}}-latest
+            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing' || ''}}:latest
 
   ros_variant:
     if: false
