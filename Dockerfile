@@ -23,6 +23,9 @@ ARG VCS_REF
 # The ROS distribution being targeted by this image
 ARG ROS_DISTRO
 
+# Override default APT sources, "ros", "ros2, or "ros2-testing"
+ARG ROS_VERISON=''
+
 # Additional APT packages to be installed
 #
 # This is used to build Docker images incorporating various ROS, or ROS 2

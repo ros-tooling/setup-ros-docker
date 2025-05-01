@@ -15,6 +15,20 @@ jobs:
       matrix:
           base_image_name: [ubuntu]
           base_image_tag: [focal, jammy, noble]
+          # ros_version: [ros, ros2, ros2-testing]
+          include:
+            - base_image_tag: focal
+              target_tag: focal
+              ros_version: ros
+            - base_image_tag: jammy
+              target_tag: jammy
+              ros_version: ros2
+            - base_image_tag: noble
+              target_tag: noble
+              ros_version: ros2
+            - base_image_tag: noble
+              target_tag: noble-testing
+              ros_version: ros2-testing
     name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
@@ -51,9 +65,10 @@ jobs:
             BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=none
+            ROS_VERSION=${{ matrix.ros_version }}
           tags: |
-            rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}-latest
-            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}:master
+            rostooling/setup-ros-docker:${{ matrix.base_image_name }}-${{ matrix.target_tag }}-latest
+            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.base_image_name }}-${{ matrix.target_tag }}:master
 
   build_ubuntu_docker_image_ros:
     strategy:

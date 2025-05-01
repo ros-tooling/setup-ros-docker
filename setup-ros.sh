@@ -33,17 +33,21 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 update-ca-certificates
 curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 
-ROS_VERSION="ros"
 RTI_CONNEXT_DDS=""
-case ${ROS_DISTRO} in
-	"noetic")
-		ROS_VERSION="ros"
-		;;
-	*)
-		RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
-		ROS_VERSION="ros2"
-		;;
-esac
+
+if [ -z $ROS_VERSION ]; then
+	ROS_VERSION='ros2'
+	case ${ROS_DISTRO} in
+		"noetic")
+			ROS_VERSION="ros"
+			;;
+		*)
+			RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
+			ROS_VERSION="ros2"
+			;;
+	esac
+fi
+
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ROS_VERSION}/ubuntu $(lsb_release -sc) main" |\
 	tee /etc/apt/sources.list.d/${ROS_VERSION}.list > /dev/null
 
