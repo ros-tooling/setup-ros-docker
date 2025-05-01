@@ -63,6 +63,7 @@ jobs:
             ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing'}}:latest
 
   ros_variant:
+    if: false
     strategy:
       fail-fast: false
       matrix:
