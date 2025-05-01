@@ -35,17 +35,18 @@ curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr
 
 RTI_CONNEXT_DDS=""
 
-if [ -z $ROS_VERSION ]; then
-	ROS_VERSION='ros2'
-	case ${ROS_DISTRO} in
-		"noetic")
-			ROS_VERSION="ros"
-			;;
-		*)
-			RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
-			ROS_VERSION="ros2"
-			;;
-	esac
+ROS_VERSION='ros2'
+case ${ROS_DISTRO} in
+	"noetic")
+		ROS_VERSION="ros"
+		;;
+	*)
+		RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
+		ROS_VERSION="ros2"
+		;;
+esac
+if [ "${ROS_TESTING}" = "true" ]; then
+	ROS_VERSION="${ROS_VERSION}-testing"
 fi
 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ROS_VERSION}/ubuntu $(lsb_release -sc) main" |\

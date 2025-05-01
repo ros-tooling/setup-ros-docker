@@ -13,23 +13,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - source_tag: focal
-            target_tag: focal
-            ros_version: ros
-          - source_tag: jammy
-            target_tag: jammy
-            ros_version: ros2
-          - source_tag: noble
-            target_tag: noble
-            ros_version: ros2
-          - source_tag: noble
-            target_tag: noble-testing
-            ros_version: ros2-testing
-    name: "ubuntu-${{ matrix.target_tag }}"
+        platform: [linux/amd64, linux/arm64]
+        base_image_tag: [focal, jammy, noble]
+        ros_testing: [false, true]
+        exclude:
+          - base_image_tag: focal
+            ros_testing: true
+          - base_image_tag: jammy
+            ros_testing: true
+    name: "ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing' || ''}} ${{ matrix.platform }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04${{ matrix.platform == 'linux/arm64' && '-arm' || '' }}
     steps:
       -
         name: Checkout repository
@@ -55,19 +50,20 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: "${{ matrix.platform }}"
           push: ${{ github.event_name != 'pull_request' }}
           build-args: |
             BASE_IMAGE_NAME=ubuntu
-            BASE_IMAGE_TAG=${{ matrix.source_tag }}
+            BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
             VCS_REF=${{ github.sha }}
             ROS_DISTRO=none
-            ROS_VERSION=${{ matrix.ros_version }}
+            ROS_TESTING=${{ matrix.ros_testing && 'true' || '' }}
           tags: |
-            rostooling/setup-ros-docker:ubuntu-${{ matrix.target_tag }}-latest
-            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-ubuntu-${{ matrix.target_tag }}:latest
+            rostooling/setup-ros-docker:ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing' || ''}}-latest
+            ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-ubuntu-${{ matrix.base_image_tag }}${{ matrix.ros_testing && '-testing' || ''}}:latest
 
   ros_variant:
+    if: false
     strategy:
       fail-fast: false
       matrix:
