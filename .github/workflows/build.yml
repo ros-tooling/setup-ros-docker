@@ -29,7 +29,7 @@ jobs:
             - base_image_tag: noble
               target_tag: noble-testing
               ros_version: ros2-testing
-    name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
+    # name: "${{ matrix.base_image_name }}-${{ matrix.base_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
     runs-on: ubuntu-latest
