@@ -29,11 +29,14 @@ jobs:
     name: "ubuntu-${{ matrix.target_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       -
         name: Checkout repository
         uses: actions/checkout@v4
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
       -
         name: Set up docker buildx
         uses: docker/setup-buildx-action@v3
@@ -127,11 +130,14 @@ jobs:
     name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     -
       name: Checkout repository
       uses: actions/checkout@v4
+    -
+      name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
     -
       name: Set up docker buildx
       uses: docker/setup-buildx-action@v3
