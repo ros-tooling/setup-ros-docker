@@ -8,9 +8,9 @@ The purpose of these images is to provide a ready-to-use base development enviro
 
 The types of images created are:
 * OS Base: "ready to install ROS and build a workspace" - has ROS APT repositories setup and build tools installed, but no actual ROS packages installed yet
-* [`ros-core`](https://index.ros.org/p/ros_core/github-ros2-variants/): Built on OS Base, contains the `ros-core` variant preinstalled
-* [`ros-base`](https://index.ros.org/p/ros_base/github-ros2-variants/): Built on OS Base, contains the `ros-base` variant preinstalled
-* [`desktop`](https://index.ros.org/p/desktop/github-ros2-variants/): Built on OS Base, contains the `desktop` variant preinstalled
+* [`ros-core`](https://index.ros.org/p/ros_core/): Built on OS Base, contains the `ros-core` variant preinstalled
+* [`ros-base`](https://index.ros.org/p/ros_base/): Built on OS Base, contains the `ros-base` variant preinstalled
+* [`desktop`](https://index.ros.org/p/desktop/): Built on OS Base, contains the `desktop` variant preinstalled
 
 The tagging structure is `setup-ros-docker/{OS-VERSION}[-{ROS-DISTRO}-{ROS-VARIANT}]`
 
