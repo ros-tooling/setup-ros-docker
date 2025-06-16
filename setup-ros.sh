@@ -36,14 +36,16 @@ curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr
 RTI_CONNEXT_DDS=""
 
 if [ -z $ROS_VERSION ]; then
-	ROS_VERSION='ros2'
+	ROS_VERSION="ros2"
 	case ${ROS_DISTRO} in
 		"noetic")
 			ROS_VERSION="ros"
 			;;
-		*)
+		"humble" | "jazzy")
 			RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
-			ROS_VERSION="ros2"
+			;;
+		*)
+			RTI_CONNEXT_DDS="rti-connext-dds-7.3.0-ros"
 			;;
 	esac
 fi
