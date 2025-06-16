@@ -72,7 +72,7 @@ jobs:
       fail-fast: false
       matrix:
           base_image_name: [ubuntu]
-          ros_distro: [noetic, humble, jazzy, rolling]
+          ros_distro: [noetic, humble, jazzy, kilted, rolling]
           ros_variant: [desktop, ros-base]
           include:
 
@@ -111,6 +111,18 @@ jobs:
             ros_variant: ros-base
             rmw_implementations: ros-jazzy-rmw-fastrtps-cpp,ros-jazzy-rmw-cyclonedds-cpp,ros-jazzy-rmw-connextdds
             output_image_tag: ubuntu-noble-ros-jazzy-ros-base
+
+          # Kilted Kaiju (May 2025 - December 2026)
+          - ros_distro: kilted
+            base_image_tag: noble
+            ros_variant: desktop
+            rmw_implementations: ros-kilted-rmw-fastrtps-cpp,ros-kilted-rmw-cyclonedds-cpp,ros-kilted-rmw-connextdds
+            output_image_tag: ubuntu-noble-ros-kilted-desktop
+          - ros_distro: kilted
+            base_image_tag: noble
+            ros_variant: ros-base
+            rmw_implementations: ros-kilted-rmw-fastrtps-cpp,ros-kilted-rmw-cyclonedds-cpp,ros-kilted-rmw-connextdds
+            output_image_tag: ubuntu-noble-ros-kilted-ros-base
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
