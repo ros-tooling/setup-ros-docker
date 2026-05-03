@@ -33,22 +33,24 @@ apt-get install --no-install-recommends --quiet --yes tzdata
 update-ca-certificates
 curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 
-RTI_CONNEXT_DDS=""
-
 if [ -z $ROS_VERSION ]; then
 	ROS_VERSION="ros2"
-	case ${ROS_DISTRO} in
-		"noetic")
-			ROS_VERSION="ros"
-			;;
-		"humble" | "jazzy")
-			RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
-			;;
-		*)
-			RTI_CONNEXT_DDS="rti-connext-dds-7.3.0-ros"
-			;;
-	esac
 fi
+RTI_CONNEXT_DDS=""
+case ${ROS_DISTRO} in
+	"noetic")
+		ROS_VERSION="ros"
+		;;
+	"humble" | "jazzy")
+		RTI_CONNEXT_DDS="rti-connext-dds-6.0.1"
+		;;
+	"kilted")
+		RTI_CONNEXT_DDS="rti-connext-dds-7.3.0-ros"
+		;;
+	"rolling" | "lyrical")
+		RTI_CONNEXT_DDS="rti-connext-dds-7.7.0-ros"
+		;;
+esac
 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ROS_VERSION}/ubuntu $(lsb_release -sc) main" |\
 	tee /etc/apt/sources.list.d/${ROS_VERSION}.list > /dev/null
@@ -59,8 +61,8 @@ apt-get update
 export PIP_BREAK_SYSTEM_PACKAGES=1
 UBUNTU_VERSION=$(lsb_release -cs)
 case ${UBUNTU_VERSION} in
-	"noble" | "jammy")
-		# For 24.04 and 22.04, install using apt only
+	"resolute" | "noble" | "jammy")
+		# For >=22.04, install using apt only
 		# Basics
 		apt-get install --no-install-recommends --quiet --yes \
 			clang \
