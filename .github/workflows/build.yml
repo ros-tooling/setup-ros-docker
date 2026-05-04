@@ -26,6 +26,13 @@ jobs:
           - source_tag: noble
             target_tag: noble-testing
             ros_version: ros2-testing
+          # TODO(christophebedard): switch back to 'ros_version: ros2' once the Rolling transition to Resolute is complete
+          - source_tag: resolute
+            target_tag: resolute
+            ros_version: ros2-testing
+          - source_tag: resolute
+            target_tag: resolute-testing
+            ros_version: ros2-testing
     name: "ubuntu-${{ matrix.target_tag }}"
     # always use latest linux worker, as it should not have any impact
     # when it comes to building docker images.
@@ -126,15 +133,15 @@ jobs:
 
           # Rolling Ridley (June 2020 - Ongoing)
           - ros_distro: rolling
-            base_image_tag: noble
+            base_image_tag: resolute
             ros_variant: desktop
             rmw_implementations: ros-rolling-rmw-fastrtps-cpp,ros-rolling-rmw-cyclonedds-cpp,ros-rolling-rmw-connextdds
-            output_image_tag: ubuntu-noble-ros-rolling-desktop
+            output_image_tag: ubuntu-resolute-ros-rolling-desktop
           - ros_distro: rolling
-            base_image_tag: noble
+            base_image_tag: resolute
             ros_variant: ros-base
             rmw_implementations: ros-rolling-rmw-fastrtps-cpp,ros-rolling-rmw-cyclonedds-cpp,ros-rolling-rmw-connextdds
-            output_image_tag: ubuntu-noble-ros-rolling-ros-base
+            output_image_tag: ubuntu-resolute-ros-rolling-ros-base
 
     name: "${{ matrix.output_image_tag }}"
     # always use latest linux worker, as it should not have any impact
@@ -167,12 +174,14 @@ jobs:
         context: .
         platforms: linux/amd64,linux/arm64
         push: ${{ github.event_name != 'pull_request' }}
+        # TODO(christophebedard): remove ROS_VERSION once the Rolling transition to Resolute is complete
         build-args: |
           BASE_IMAGE_NAME=${{ matrix.base_image_name }}
           BASE_IMAGE_TAG=${{ matrix.base_image_tag }}
           EXTRA_APT_PACKAGES=ros-${{ matrix.ros_distro }}-${{ matrix.ros_variant }},${{ matrix.rmw_implementations }}
           VCS_REF=${{ github.sha }}
           ROS_DISTRO=${{ matrix.ros_distro }}
+          ROS_VERSION=${{ matrix.ros_distro == 'rolling' && 'ros2-testing' || '' }}
         tags: |
           rostooling/setup-ros-docker:${{ matrix.output_image_tag }}-latest
           ghcr.io/ros-tooling/setup-ros-docker/setup-ros-docker-${{ matrix.output_image_tag }}:master
