@@ -50,6 +50,9 @@ case ${ROS_DISTRO} in
 	"rolling" | "lyrical")
 		RTI_CONNEXT_DDS="rti-connext-dds-7.7.0-ros"
 		;;
+	*)
+		# Don't install Connext
+		;;
 esac
 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/${ROS_VERSION}/ubuntu $(lsb_release -sc) main" |\
